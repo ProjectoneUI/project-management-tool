@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anmelden - Projektmanagement-Tool</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary-color: #0052CC;
+      --primary-hover: #0747A6;
+      --secondary-color: #6554C0;
+      --success-color: #36B37E;
+      --warning-color: #FFAB00;
+      --danger-color: #FF5630;
+      --text-color: #172B4D;
+      --text-secondary: #6B778C;
+      --background-color: #F4F5F7;
+      --background-light: #FFFFFF;
+      --border-color: #DFE1E6;
+      --border-radius: 3px;
+      --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
+      --shadow-md: 0 3px 5px rgba(9, 30, 66, 0.12);
+      --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.16);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .login-container {
+      max-width: 400px;
+      width: 100%;
+      background-color: var(--background-light);
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: var(--text-color);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    
+    .remember-me input {
+      margin-right: 8px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      width: 100%;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .login-footer {
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .login-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .login-options {
+      margin-top: 30px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+    
+    .login-options-title {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    
+    .social-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #f1f2f4;
+      color: var(--text-color);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .social-btn:hover {
+      background-color: #e4e6e8;
+    }
+    
+    .error-message {
+      color: var(--danger-color);
+      font-size: 14px;
+      margin-top: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">PM Tool</div>
+    <h1>Anmelden</h1>
+    
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">E-Mail-Adresse</label>
+        <input type="email" id="email" name="email" required>
+        <div class="error-message" id="email-error">Bitte gib eine gültige E-Mail-Adresse ein.</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input type="password" id="password" name="password" required>
+        <div class="error-message" id="password-error">Das Passwort muss mindestens 6 Zeichen lang sein.</div>
+      </div>
+      
+      <div class="remember-me">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Angemeldet bleiben</label>
+      </div>
+      
+      <button type="submit" class="btn">Anmelden</button>
+    </form>
+    
+    <div class="login-footer">
+      <p>Noch kein Konto? <a href="#">Registrieren</a></p>
+      <p><a href="#">Passwort vergessen?</a></p>
+    </div>
+    
+    <div class="login-options">
+      <div class="login-options-title">Oder anmelden mit</div>
+      <div class="social-buttons">
+        <button class="social-btn">G</button>
+        <button class="social-btn">f</button>
+        <button class="social-btn">in</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const emailError = document.getElementById('email-error');
+      const passwordError = document.getElementById('password-error');
+      
+      // Formular-Validierung
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        
+        // E-Mail validieren
+        if (!emailInput.value || !isValidEmail(emailInput.value)) {
+          emailError.style.display = 'block';
+          isValid = false;
+        } else {
+          emailError.style.display = 'none';
+        }
+        
+        // Passwort validieren
+        if (!passwordInput.value || passwordInput.value.length < 6) {
+          passwordError.style.display = 'block';
+          isValid = false;
+        } else {
+          passwordError.style.display = 'none';
+        }
+        
+        // Wenn alles gültig ist, zur Hauptseite weiterleiten
+        if (isValid) {
+          // Hier würde normalerweise die Authentifizierung stattfinden
+          window.location.href = 'atlassian-style.html';
+        }
+      });
+      
+      // E-Mail-Validierung
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+      
+      // Einfache Demo-Anmeldedaten für Testzwecke
+      emailInput.value = 'demo@example.com';
+      passwordInput.value = 'password123';
+    });
+  </script>
+</body>
+</html> 

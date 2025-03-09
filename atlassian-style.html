@@ -190,17 +190,21 @@
       border-radius: var(--border-radius);
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
-      transition: box-shadow 0.2s ease;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
     
     .project-card:hover {
       box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
     }
     
     .project-card-header {
       padding: 16px;
       border-bottom: 1px solid var(--border-color);
+      position: relative;
     }
     
     .project-card-title {
@@ -212,6 +216,9 @@
     .project-card-subtitle {
       color: var(--text-secondary);
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .project-card-body {
@@ -221,6 +228,11 @@
     .project-card-description {
       margin-bottom: 16px;
       font-size: 14px;
+      color: var(--text-secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     
     .project-card-footer {
@@ -231,6 +243,256 @@
       justify-content: space-between;
       font-size: 14px;
       color: var(--text-secondary);
+      background-color: rgba(9, 30, 66, 0.02);
+    }
+    
+    .project-card-progress {
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    
+    .project-card-progress-bar {
+      height: 100%;
+      background-color: var(--success-color);
+    }
+    
+    .project-card-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    
+    .project-card-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .project-card-stat-icon {
+      color: var(--text-secondary);
+    }
+    
+    .project-card-members {
+      display: flex;
+      margin-top: 12px;
+    }
+    
+    .project-card-member {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: -8px;
+      border: 2px solid var(--background-light);
+    }
+    
+    .project-card-member:first-child {
+      margin-left: 0;
+    }
+    
+    .project-card-priority {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 32px 32px 0;
+      border-color: transparent var(--warning-color) transparent transparent;
+    }
+    
+    .project-card-priority.high {
+      border-color: transparent var(--danger-color) transparent transparent;
+    }
+    
+    .project-card-priority.low {
+      border-color: transparent var(--success-color) transparent transparent;
+    }
+    
+    /* Project Board (Trello-Style) */
+    .project-board {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .project-column {
+      min-width: 280px;
+      width: 280px;
+      background-color: var(--background-color);
+      border-radius: var(--border-radius);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-column-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .project-column-count {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-secondary);
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .project-column-body {
+      padding: 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .project-item {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    
+    .project-item:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    
+    .project-item.priority-high {
+      border-left-color: var(--danger-color);
+    }
+    
+    .project-item.priority-medium {
+      border-left-color: var(--warning-color);
+    }
+    
+    .project-item.priority-low {
+      border-left-color: var(--success-color);
+    }
+    
+    .project-item-title {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    
+    .project-item-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+    
+    .project-item-members {
+      display: flex;
+    }
+    
+    .project-item-member {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: -6px;
+      border: 2px solid var(--background-light);
+    }
+    
+    .project-item-member:first-child {
+      margin-left: 0;
+    }
+    
+    .project-column-footer {
+      padding: 12px;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .add-project-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: var(--border-radius);
+      transition: background-color 0.2s ease;
+    }
+    
+    .add-project-item:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-color);
+    }
+    
+    /* Dashboard Overview */
+    .dashboard-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .overview-card {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .overview-card-title {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    
+    .overview-card-value {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .overview-card-change {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+    }
+    
+    .overview-card-change.positive {
+      color: var(--success-color);
+    }
+    
+    .overview-card-change.negative {
+      color: var(--danger-color);
     }
     
     /* Task List */
@@ -243,15 +505,64 @@
       border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: flex-start;
+      transition: background-color 0.2s ease;
+    }
+    
+    .task-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
     }
     
     .task-item:last-child {
       border-bottom: none;
     }
     
-    .task-checkbox {
+    .task-checkbox-container {
       margin-right: 12px;
-      margin-top: 3px;
+      position: relative;
+    }
+    
+    .task-checkbox {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    .checkmark {
+      position: relative;
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background-color: #fff;
+      border: 2px solid var(--border-color);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    .task-checkbox:checked ~ .checkmark {
+      background-color: var(--success-color);
+      border-color: var(--success-color);
+    }
+    
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    .task-checkbox:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    .checkmark:after {
+      left: 5px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
     }
     
     .task-content {
@@ -261,12 +572,12 @@
     .task-title {
       font-weight: 500;
       margin-bottom: 4px;
+      transition: text-decoration 0.2s ease, color 0.2s ease;
     }
     
-    .task-description {
+    .task-item.completed .task-title {
+      text-decoration: line-through;
       color: var(--text-secondary);
-      font-size: 14px;
-      margin-bottom: 8px;
     }
     
     .task-meta {
@@ -274,29 +585,41 @@
       align-items: center;
       gap: 12px;
       font-size: 12px;
+      color: var(--text-secondary);
     }
     
-    .task-status {
-      display: inline-flex;
+    .task-project {
+      color: var(--primary-color);
+    }
+    
+    .task-due {
+      display: flex;
       align-items: center;
-      padding: 2px 8px;
+      gap: 4px;
+    }
+    
+    .task-due.overdue {
+      color: var(--danger-color);
+    }
+    
+    .task-actions {
+      margin-left: 12px;
+    }
+    
+    .task-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
       border-radius: 3px;
-      font-weight: 500;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     
-    .task-status.todo {
-      background-color: #DEEBFF;
-      color: #0747A6;
-    }
-    
-    .task-status.in-progress {
-      background-color: #FFF0B3;
-      color: #172B4D;
-    }
-    
-    .task-status.done {
-      background-color: #E3FCEF;
-      color: #006644;
+    .task-action-btn:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-color);
     }
     
     /* AI Assistant */
@@ -479,21 +802,44 @@
       <div class="content">
         <div class="page-header">
           <h1 class="page-title">Willkommen zurück, Max</h1>
-          <p class="page-description">Hier ist ein Überblick über Ihre Projekte und Aufgaben.</p>
+          <p class="page-description">Hier ist ein Überblick über deine Projekte und Aufgaben.</p>
         </div>
         
-        <!-- AI Assistant -->
-        <div class="ai-assistant mb-4">
-          <div class="ai-assistant-header">
-            KI-Assistent
-          </div>
-          <div class="ai-assistant-body">
-            <div class="ai-input-container">
-              <input type="text" id="ai-prompt" class="ai-input" placeholder="Stellen Sie eine Frage...">
-              <button id="ai-submit" class="ai-submit">Senden</button>
+        <!-- Dashboard Overview -->
+        <div class="dashboard-overview">
+          <div class="overview-card">
+            <div class="overview-card-title">Aktive Projekte</div>
+            <div class="overview-card-value">8</div>
+            <div class="overview-card-change positive">
+              <span>↑ 2</span>
+              <span>seit letztem Monat</span>
             </div>
-            <div class="ai-response" id="ai-response">
-              <p id="ai-text"></p>
+          </div>
+          
+          <div class="overview-card">
+            <div class="overview-card-title">Offene Aufgaben</div>
+            <div class="overview-card-value">24</div>
+            <div class="overview-card-change negative">
+              <span>↑ 5</span>
+              <span>seit letzter Woche</span>
+            </div>
+          </div>
+          
+          <div class="overview-card">
+            <div class="overview-card-title">Erledigte Aufgaben</div>
+            <div class="overview-card-value">18</div>
+            <div class="overview-card-change positive">
+              <span>↑ 7</span>
+              <span>seit letzter Woche</span>
+            </div>
+          </div>
+          
+          <div class="overview-card">
+            <div class="overview-card-title">Überfällige Aufgaben</div>
+            <div class="overview-card-value">3</div>
+            <div class="overview-card-change positive">
+              <span>↓ 2</span>
+              <span>seit letzter Woche</span>
             </div>
           </div>
         </div>
@@ -502,11 +848,324 @@
         <div class="card mb-4">
           <div class="card-header">
             <div class="card-title">Meine Projekte</div>
-            <button class="btn btn-secondary">Alle anzeigen</button>
+            <button class="btn btn-primary">+ Neues Projekt</button>
           </div>
           <div class="card-body">
             <div class="grid" id="projects-container">
-              <!-- Projects will be loaded here -->
+              <!-- Project Card 1 -->
+              <div class="project-card">
+                <div class="project-card-priority"></div>
+                <div class="project-card-header">
+                  <div class="project-card-title">Website Redesign</div>
+                  <div class="project-card-subtitle">
+                    <span class="badge badge-blue">In Bearbeitung</span>
+                    <span>Projekt #1</span>
+                  </div>
+                </div>
+                <div class="project-card-body">
+                  <div class="project-card-description">Komplettes Redesign der Unternehmenswebsite mit modernem UI/UX-Design und verbesserten Funktionen.</div>
+                  
+                  <div class="project-card-progress">
+                    <div class="project-card-progress-bar" style="width: 65%"></div>
+                  </div>
+                  
+                  <div class="project-card-stats">
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">✅</span>
+                      <span>12/20 Aufgaben</span>
+                    </div>
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">📅</span>
+                      <span>15. März 2025</span>
+                    </div>
+                  </div>
+                  
+                  <div class="project-card-members">
+                    <div class="project-card-member">MM</div>
+                    <div class="project-card-member">JS</div>
+                    <div class="project-card-member">AK</div>
+                  </div>
+                </div>
+                <div class="project-card-footer">
+                  <div>Fortschritt: 65%</div>
+                  <div>Vor 2 Tagen aktualisiert</div>
+                </div>
+              </div>
+              
+              <!-- Project Card 2 -->
+              <div class="project-card">
+                <div class="project-card-priority high"></div>
+                <div class="project-card-header">
+                  <div class="project-card-title">Mobile App Entwicklung</div>
+                  <div class="project-card-subtitle">
+                    <span class="badge badge-yellow">Planung</span>
+                    <span>Projekt #2</span>
+                  </div>
+                </div>
+                <div class="project-card-body">
+                  <div class="project-card-description">Entwicklung einer nativen mobilen App für iOS und Android mit Fokus auf Benutzerfreundlichkeit und Performance.</div>
+                  
+                  <div class="project-card-progress">
+                    <div class="project-card-progress-bar" style="width: 25%"></div>
+                  </div>
+                  
+                  <div class="project-card-stats">
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">✅</span>
+                      <span>5/25 Aufgaben</span>
+                    </div>
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">📅</span>
+                      <span>30. Juni 2025</span>
+                    </div>
+                  </div>
+                  
+                  <div class="project-card-members">
+                    <div class="project-card-member">MM</div>
+                    <div class="project-card-member">LK</div>
+                    <div class="project-card-member">TW</div>
+                    <div class="project-card-member">+2</div>
+                  </div>
+                </div>
+                <div class="project-card-footer">
+                  <div>Fortschritt: 25%</div>
+                  <div>Vor 5 Tagen aktualisiert</div>
+                </div>
+              </div>
+              
+              <!-- Project Card 3 -->
+              <div class="project-card">
+                <div class="project-card-priority low"></div>
+                <div class="project-card-header">
+                  <div class="project-card-title">Content Marketing Kampagne</div>
+                  <div class="project-card-subtitle">
+                    <span class="badge badge-green">Aktiv</span>
+                    <span>Projekt #3</span>
+                  </div>
+                </div>
+                <div class="project-card-body">
+                  <div class="project-card-description">Entwicklung und Umsetzung einer umfassenden Content-Marketing-Strategie für Q2 2025.</div>
+                  
+                  <div class="project-card-progress">
+                    <div class="project-card-progress-bar" style="width: 40%"></div>
+                  </div>
+                  
+                  <div class="project-card-stats">
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">✅</span>
+                      <span>8/15 Aufgaben</span>
+                    </div>
+                    <div class="project-card-stat">
+                      <span class="project-card-stat-icon">📅</span>
+                      <span>15. April 2025</span>
+                    </div>
+                  </div>
+                  
+                  <div class="project-card-members">
+                    <div class="project-card-member">MM</div>
+                    <div class="project-card-member">SL</div>
+                  </div>
+                </div>
+                <div class="project-card-footer">
+                  <div>Fortschritt: 40%</div>
+                  <div>Heute aktualisiert</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Trello-Style Board for Quick Tasks -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">Aufgaben-Board</div>
+            <button class="btn btn-secondary">Alle anzeigen</button>
+          </div>
+          <div class="card-body">
+            <div class="project-board">
+              <!-- To Do Column -->
+              <div class="project-column">
+                <div class="project-column-header">
+                  <span>Zu erledigen</span>
+                  <span class="project-column-count">4</span>
+                </div>
+                <div class="project-column-body">
+                  <div class="project-item priority-high">
+                    <div class="project-item-title">Wireframes für Homepage erstellen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">MM</div>
+                      </div>
+                      <div>15. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item priority-medium">
+                    <div class="project-item-title">API-Dokumentation aktualisieren</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">JS</div>
+                      </div>
+                      <div>18. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item">
+                    <div class="project-item-title">Marketingplan für Q2 erstellen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">SL</div>
+                      </div>
+                      <div>20. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item priority-low">
+                    <div class="project-item-title">Kundenfeedback analysieren</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">AK</div>
+                      </div>
+                      <div>22. März</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-column-footer">
+                  <div class="add-project-item">
+                    <span>+</span>
+                    <span>Aufgabe hinzufügen</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- In Progress Column -->
+              <div class="project-column">
+                <div class="project-column-header">
+                  <span>In Bearbeitung</span>
+                  <span class="project-column-count">3</span>
+                </div>
+                <div class="project-column-body">
+                  <div class="project-item priority-high">
+                    <div class="project-item-title">Frontend-Komponenten entwickeln</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">JS</div>
+                        <div class="project-item-member">TW</div>
+                      </div>
+                      <div>12. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item priority-medium">
+                    <div class="project-item-title">Datenbankschema optimieren</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">LK</div>
+                      </div>
+                      <div>14. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item">
+                    <div class="project-item-title">Social Media Content erstellen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">SL</div>
+                      </div>
+                      <div>15. März</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-column-footer">
+                  <div class="add-project-item">
+                    <span>+</span>
+                    <span>Aufgabe hinzufügen</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Review Column -->
+              <div class="project-column">
+                <div class="project-column-header">
+                  <span>Review</span>
+                  <span class="project-column-count">2</span>
+                </div>
+                <div class="project-column-body">
+                  <div class="project-item priority-high">
+                    <div class="project-item-title">Login-Funktionalität testen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">MM</div>
+                        <div class="project-item-member">AK</div>
+                      </div>
+                      <div>10. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item">
+                    <div class="project-item-title">Designsystem überprüfen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">TW</div>
+                      </div>
+                      <div>11. März</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-column-footer">
+                  <div class="add-project-item">
+                    <span>+</span>
+                    <span>Aufgabe hinzufügen</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Done Column -->
+              <div class="project-column">
+                <div class="project-column-header">
+                  <span>Erledigt</span>
+                  <span class="project-column-count">3</span>
+                </div>
+                <div class="project-column-body">
+                  <div class="project-item">
+                    <div class="project-item-title">Projektplan erstellen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">MM</div>
+                      </div>
+                      <div>5. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item">
+                    <div class="project-item-title">Anforderungsanalyse durchführen</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">MM</div>
+                        <div class="project-item-member">JS</div>
+                      </div>
+                      <div>6. März</div>
+                    </div>
+                  </div>
+                  
+                  <div class="project-item">
+                    <div class="project-item-title">Technologie-Stack definieren</div>
+                    <div class="project-item-footer">
+                      <div class="project-item-members">
+                        <div class="project-item-member">LK</div>
+                        <div class="project-item-member">JS</div>
+                      </div>
+                      <div>8. März</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-column-footer">
+                  <div class="add-project-item">
+                    <span>+</span>
+                    <span>Aufgabe hinzufügen</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -515,11 +1174,94 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">Meine Aufgaben</div>
-            <button class="btn btn-secondary">Alle anzeigen</button>
+            <button class="btn btn-primary">+ Neue Aufgabe</button>
           </div>
           <div class="card-body">
             <ul class="task-list" id="tasks-container">
-              <!-- Tasks will be loaded here -->
+              <li class="task-item">
+                <div class="task-checkbox-container">
+                  <input type="checkbox" class="task-checkbox" id="task1">
+                  <span class="checkmark"></span>
+                </div>
+                <div class="task-content">
+                  <div class="task-title">Wireframes für Homepage erstellen</div>
+                  <div class="task-meta">
+                    <span class="task-project">Website Redesign</span>
+                    <span class="task-due">Fällig: 15. März 2025</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  <button class="task-action-btn">⋮</button>
+                </div>
+              </li>
+              
+              <li class="task-item">
+                <div class="task-checkbox-container">
+                  <input type="checkbox" class="task-checkbox" id="task2">
+                  <span class="checkmark"></span>
+                </div>
+                <div class="task-content">
+                  <div class="task-title">API-Dokumentation aktualisieren</div>
+                  <div class="task-meta">
+                    <span class="task-project">Mobile App Entwicklung</span>
+                    <span class="task-due">Fällig: 18. März 2025</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  <button class="task-action-btn">⋮</button>
+                </div>
+              </li>
+              
+              <li class="task-item">
+                <div class="task-checkbox-container">
+                  <input type="checkbox" class="task-checkbox" id="task3">
+                  <span class="checkmark"></span>
+                </div>
+                <div class="task-content">
+                  <div class="task-title">Marketingplan für Q2 erstellen</div>
+                  <div class="task-meta">
+                    <span class="task-project">Content Marketing Kampagne</span>
+                    <span class="task-due">Fällig: 20. März 2025</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  <button class="task-action-btn">⋮</button>
+                </div>
+              </li>
+              
+              <li class="task-item completed">
+                <div class="task-checkbox-container">
+                  <input type="checkbox" class="task-checkbox" id="task4" checked>
+                  <span class="checkmark"></span>
+                </div>
+                <div class="task-content">
+                  <div class="task-title">Projektplan erstellen</div>
+                  <div class="task-meta">
+                    <span class="task-project">Website Redesign</span>
+                    <span class="task-due">Erledigt am: 5. März 2025</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  <button class="task-action-btn">⋮</button>
+                </div>
+              </li>
+              
+              <li class="task-item completed">
+                <div class="task-checkbox-container">
+                  <input type="checkbox" class="task-checkbox" id="task5" checked>
+                  <span class="checkmark"></span>
+                </div>
+                <div class="task-content">
+                  <div class="task-title">Anforderungsanalyse durchführen</div>
+                  <div class="task-meta">
+                    <span class="task-project">Website Redesign</span>
+                    <span class="task-due">Erledigt am: 6. März 2025</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  <button class="task-action-btn">⋮</button>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
@@ -651,6 +1393,426 @@
       loadProjects();
       loadTasks();
     });
+
+    // Interaktive Elemente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Aufgaben-Checkboxen
+      const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+      taskCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const taskItem = this.closest('.task-item');
+          if (this.checked) {
+            taskItem.classList.add('completed');
+          } else {
+            taskItem.classList.remove('completed');
+          }
+        });
+      });
+      
+      // Projekt-Karten klickbar machen
+      const projectCards = document.querySelectorAll('.project-card');
+      projectCards.forEach(card => {
+        card.addEventListener('click', function() {
+          window.location.href = 'project-detail.html';
+        });
+      });
+      
+      // Drag-and-Drop für Kanban-Board
+      const projectItems = document.querySelectorAll('.project-item');
+      const projectColumns = document.querySelectorAll('.project-column-body');
+      
+      projectItems.forEach(item => {
+        item.setAttribute('draggable', true);
+        
+        item.addEventListener('dragstart', function(e) {
+          e.dataTransfer.setData('text/plain', this.innerHTML);
+          this.classList.add('dragging');
+        });
+        
+        item.addEventListener('dragend', function() {
+          this.classList.remove('dragging');
+        });
+      });
+      
+      projectColumns.forEach(column => {
+        column.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          const draggable = document.querySelector('.dragging');
+          if (draggable) {
+            this.appendChild(draggable);
+          }
+        });
+      });
+      
+      // "Aufgabe hinzufügen" Buttons
+      const addTaskButtons = document.querySelectorAll('.add-project-item');
+      addTaskButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const column = this.closest('.project-column');
+          const columnBody = column.querySelector('.project-column-body');
+          const newTask = document.createElement('div');
+          newTask.className = 'project-item';
+          newTask.setAttribute('draggable', true);
+          newTask.innerHTML = `
+            <div class="project-item-title">Neue Aufgabe</div>
+            <div class="project-item-footer">
+              <div class="project-item-members">
+                <div class="project-item-member">MM</div>
+              </div>
+              <div>Heute</div>
+            </div>
+          `;
+          
+          // Drag-and-Drop-Funktionalität für neue Aufgabe
+          newTask.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', this.innerHTML);
+            this.classList.add('dragging');
+          });
+          
+          newTask.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+          });
+          
+          columnBody.appendChild(newTask);
+          
+          // Anzahl der Aufgaben aktualisieren
+          const countElement = column.querySelector('.project-column-count');
+          const currentCount = parseInt(countElement.textContent);
+          countElement.textContent = currentCount + 1;
+        });
+      });
+      
+      // "Neues Projekt" Button
+      const newProjectButton = document.querySelector('.header-actions .btn-primary');
+      if (newProjectButton) {
+        newProjectButton.addEventListener('click', function() {
+          alert('Funktion zum Erstellen eines neuen Projekts wird geöffnet...');
+        });
+      }
+      
+      // "Neue Aufgabe" Button in der Aufgabenliste
+      const newTaskButton = document.querySelector('.card:last-child .card-header .btn-primary');
+      if (newTaskButton) {
+        newTaskButton.addEventListener('click', function() {
+          alert('Funktion zum Erstellen einer neuen Aufgabe wird geöffnet...');
+        });
+      }
+    });
   </script>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-toggle" id="chatbot-toggle">💬</div>
+  
+  <div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+      <div class="chatbot-title">KI-Assistent</div>
+      <button class="chatbot-close" id="chatbot-close">×</button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="message bot">Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir heute helfen?</div>
+    </div>
+    
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input-field" placeholder="Schreibe eine Nachricht...">
+      <button class="chatbot-send" id="chatbot-send">➤</button>
+    </div>
+  </div>
+  
+  <style>
+    /* Chatbot Styles */
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      z-index: 999;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    
+    .chatbot-toggle:hover {
+      transform: scale(1.1);
+      background-color: var(--primary-hover);
+    }
+    
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 350px;
+      height: 500px;
+      background-color: var(--background-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 998;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s;
+    }
+    
+    .chatbot-container.active {
+      transform: scale(1);
+    }
+    
+    .chatbot-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .chatbot-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .chatbot-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+    }
+    
+    .message.bot {
+      align-self: flex-start;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message.user {
+      align-self: flex-end;
+      background-color: var(--primary-color);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .chatbot-input {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+    }
+    
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+    }
+    
+    .chatbot-input input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .chatbot-send {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .chatbot-send:hover {
+      background-color: var(--primary-hover);
+    }
+  </style>
+  
+  <script>
+    // Chatbot-Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatbotToggle = document.getElementById('chatbot-toggle');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const chatbotClose = document.getElementById('chatbot-close');
+      const chatbotMessages = document.getElementById('chatbot-messages');
+      const chatbotInputField = document.getElementById('chatbot-input-field');
+      const chatbotSend = document.getElementById('chatbot-send');
+      
+      // Chatbot-Verlauf im localStorage speichern
+      let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+      let userName = localStorage.getItem('userName') || '';
+      
+      // Chatbot öffnen/schließen
+      chatbotToggle.addEventListener('click', function() {
+        chatbotContainer.classList.add('active');
+        
+        // Beim ersten Öffnen nach Benutzernamen fragen, wenn noch nicht bekannt
+        if (!userName) {
+          setTimeout(() => {
+            addBotMessage('Wie darf ich dich nennen?');
+            localStorage.setItem('awaitingName', 'true');
+          }, 1000);
+        }
+      });
+      
+      chatbotClose.addEventListener('click', function() {
+        chatbotContainer.classList.remove('active');
+      });
+      
+      // Chat-Verlauf laden
+      function loadChatHistory() {
+        chatbotMessages.innerHTML = '';
+        
+        if (chatHistory.length === 0) {
+          addBotMessage('Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir heute helfen?', false);
+        } else {
+          chatHistory.forEach(message => {
+            if (message.sender === 'bot') {
+              addBotMessage(message.text, false);
+            } else {
+              addUserMessage(message.text, false);
+            }
+          });
+        }
+      }
+      
+      // Chat-Verlauf laden
+      loadChatHistory();
+      
+      // Nachricht senden
+      function sendMessage() {
+        const message = chatbotInputField.value.trim();
+        if (!message) return;
+        
+        addUserMessage(message);
+        chatbotInputField.value = '';
+        
+        // Auf Benutzernamen warten
+        if (localStorage.getItem('awaitingName') === 'true') {
+          userName = message;
+          localStorage.setItem('userName', userName);
+          localStorage.removeItem('awaitingName');
+          
+          setTimeout(() => {
+            addBotMessage(`Hallo ${userName}! Schön, dich kennenzulernen. Wie kann ich dir mit deinem Projekt helfen?`);
+          }, 1000);
+          return;
+        }
+        
+        // Antwort generieren
+        setTimeout(() => {
+          let response;
+          
+          if (message.toLowerCase().includes('projekt') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu'))) {
+            response = `Natürlich ${userName}! Ich kann dir helfen, ein neues Projekt zu erstellen. Klicke auf den "+ Neues Projekt" Button oben rechts im Dashboard. Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Öffnen des Projekt-Dialogs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('.header-actions .btn-primary').click();
+            }, 2000);
+          } else if (message.toLowerCase().includes('aufgabe') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu'))) {
+            response = `Kein Problem, ${userName}! Du kannst eine neue Aufgabe erstellen, indem du auf den "+ Neue Aufgabe" Button klickst oder direkt im Kanban-Board auf "Aufgabe hinzufügen". Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Öffnen des Aufgaben-Dialogs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('.card:last-child .card-header .btn-primary').click();
+            }, 2000);
+          } else if (message.toLowerCase().includes('kalender')) {
+            response = `Der Kalender zeigt dir alle wichtigen Termine und Fristen, ${userName}. Ich öffne die Kalenderansicht für dich.`;
+            
+            // Simuliere das Öffnen der Kalenderseite nach kurzer Verzögerung
+            setTimeout(() => {
+              window.location.href = 'calendar-view.html';
+            }, 2000);
+          } else if (message.toLowerCase().includes('dokument') || message.toLowerCase().includes('wiki')) {
+            response = `In der Dokumentenverwaltung kannst du Wikis, Anleitungen und andere wichtige Informationen für dein Team erstellen und teilen, ${userName}. Jedes Projekt hat seinen eigenen Dokumentenbereich.`;
+          } else if (message.toLowerCase().includes('danke') || message.toLowerCase().includes('dank')) {
+            response = `Gerne, ${userName}! Ich bin immer hier, wenn du Hilfe brauchst.`;
+          } else if (message.toLowerCase().includes('hallo') || message.toLowerCase().includes('hi')) {
+            response = `Hallo ${userName}! Schön, dich wiederzusehen. Wie kann ich dir heute helfen?`;
+          } else if (message.toLowerCase().includes('trello')) {
+            response = `Das Aufgaben-Board im Trello-Stil findest du auf dem Dashboard. Dort kannst du Aufgaben per Drag & Drop zwischen den verschiedenen Spalten verschieben. Probier es doch gleich mal aus!`;
+          } else if (message.toLowerCase().includes('dashboard')) {
+            response = `Das Dashboard gibt dir einen Überblick über alle deine Projekte und Aufgaben. Du siehst dort Statistiken, Projekte und das Aufgaben-Board im Trello-Stil.`;
+          } else {
+            response = `Ich verstehe deine Frage zu "${message}", ${userName}. Als KI-Assistent kann ich dir bei der Projektverwaltung, Aufgabenplanung und vielem mehr helfen. Ich kann auch direkt Aktionen für dich ausführen, wie z.B. ein neues Projekt erstellen oder die Kalenderansicht öffnen. Was möchtest du tun?`;
+          }
+          
+          addBotMessage(response);
+        }, 1000);
+      }
+      
+      // Benutzer-Nachricht hinzufügen
+      function addUserMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message user';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'user', text });
+          localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Bot-Nachricht hinzufügen
+      function addBotMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message bot';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'bot', text });
+          localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Event-Listener für Senden-Button
+      chatbotSend.addEventListener('click', sendMessage);
+      
+      // Event-Listener für Enter-Taste
+      chatbotInputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+  </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
 </body>
 </html> 

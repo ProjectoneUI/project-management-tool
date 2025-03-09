@@ -197,28 +197,302 @@
       gap: 8px;
     }
     
-    /* Tabs */
-    .tabs {
+    /* Project Tabs */
+    .project-tabs {
       display: flex;
       border-bottom: 1px solid var(--border-color);
       margin-bottom: 24px;
     }
     
     .tab {
-      padding: 12px 16px;
-      cursor: pointer;
+      padding: 12px 24px;
       font-weight: 500;
-      color: var(--text-secondary);
+      cursor: pointer;
       border-bottom: 2px solid transparent;
+      transition: border-color 0.2s ease, color 0.2s ease;
     }
     
     .tab:hover {
-      color: var(--text-color);
+      color: var(--primary-color);
     }
     
     .tab.active {
       color: var(--primary-color);
       border-bottom-color: var(--primary-color);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Project Overview */
+    .project-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+    
+    .project-overview-item {
+      margin-bottom: 16px;
+    }
+    
+    .project-overview-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    
+    .project-overview-value {
+      font-weight: 500;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--success-color);
+    }
+    
+    .progress-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .project-team {
+      display: flex;
+    }
+    
+    .project-team-member {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: -8px;
+      border: 2px solid var(--background-light);
+    }
+    
+    .project-team-member:first-child {
+      margin-left: 0;
+    }
+    
+    /* Document Library */
+    .document-filters {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .document-search {
+      flex: 1;
+    }
+    
+    .document-search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+    }
+    
+    .document-search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .document-filter-select,
+    .document-sort-select {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      background-color: var(--background-light);
+    }
+    
+    .document-filter-select:focus,
+    .document-sort-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .document-list {
+      margin-top: 16px;
+    }
+    
+    .document-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
+    
+    .document-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .document-item:last-child {
+      border-bottom: none;
+    }
+    
+    .document-icon {
+      font-size: 24px;
+      margin-right: 16px;
+    }
+    
+    .document-info {
+      flex: 1;
+    }
+    
+    .document-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .document-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .document-meta span {
+      margin-right: 8px;
+    }
+    
+    .document-actions {
+      margin-left: 16px;
+    }
+    
+    .document-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 3px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .document-action-btn:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-color);
+    }
+    
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding: 16px 0;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 120px;
+      width: 2px;
+      background-color: var(--border-color);
+    }
+    
+    .timeline-item {
+      display: flex;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .timeline-date {
+      width: 120px;
+      padding-right: 24px;
+      text-align: right;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .timeline-content {
+      flex: 1;
+      padding-left: 24px;
+      position: relative;
+    }
+    
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      z-index: 1;
+    }
+    
+    .timeline-item.active .timeline-content::before {
+      background-color: var(--primary-color);
+    }
+    
+    .timeline-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .timeline-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Settings Form */
+    .settings-form {
+      max-width: 800px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    select.form-control[multiple] {
+      height: 120px;
     }
     
     /* Kanban Board */
@@ -396,36 +670,6 @@
       gap: 8px;
     }
     
-    /* Form */
-    .form-group {
-      margin-bottom: 16px;
-    }
-    
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      font-family: inherit;
-      font-size: 14px;
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary-color);
-    }
-    
-    textarea.form-control {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
     /* Buttons */
     .btn {
       display: inline-flex;
@@ -553,50 +797,515 @@
       </div>
       
       <div class="content">
-        <div class="project-header">
-          <div class="project-title-section">
-            <div class="project-title">
-              <span id="project-name">Projektname wird geladen...</span>
-              <span class="project-key" id="project-key">PROJ-1</span>
-            </div>
-            <div class="project-description" id="project-description">Projektbeschreibung wird geladen...</div>
-            <div class="project-meta">
-              <div class="project-meta-item">
-                <span class="project-meta-label">Projektleiter</span>
-                <span class="project-meta-value">Max Mustermann</span>
-              </div>
-              <div class="project-meta-item">
-                <span class="project-meta-label">Startdatum</span>
-                <span class="project-meta-value">01.01.2025</span>
-              </div>
-              <div class="project-meta-item">
-                <span class="project-meta-label">Enddatum</span>
-                <span class="project-meta-value">31.12.2025</span>
-              </div>
-              <div class="project-meta-item">
-                <span class="project-meta-label">Status</span>
-                <span class="project-meta-value">
+        <div class="page-header">
+          <h1 class="page-title">Website Redesign</h1>
+          <p class="page-description">Komplettes Redesign der Unternehmenswebsite mit modernem UI/UX-Design und verbesserten Funktionen.</p>
+        </div>
+        
+        <!-- Project Overview -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">Projektübersicht</div>
+            <button class="btn btn-secondary">Bearbeiten</button>
+          </div>
+          <div class="card-body">
+            <div class="project-overview">
+              <div class="project-overview-item">
+                <div class="project-overview-label">Status</div>
+                <div class="project-overview-value">
                   <span class="badge badge-blue">In Bearbeitung</span>
-                </span>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Fortschritt</div>
+                <div class="project-overview-value">
+                  <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 65%"></div>
+                  </div>
+                  <div class="progress-text">65%</div>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Startdatum</div>
+                <div class="project-overview-value">1. März 2025</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Fälligkeitsdatum</div>
+                <div class="project-overview-value">15. März 2025</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Priorität</div>
+                <div class="project-overview-value">
+                  <span class="badge badge-yellow">Mittel</span>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Projektleiter</div>
+                <div class="project-overview-value">Max Mustermann</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Team</div>
+                <div class="project-overview-value">
+                  <div class="project-team">
+                    <div class="project-team-member">MM</div>
+                    <div class="project-team-member">JS</div>
+                    <div class="project-team-member">AK</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="project-actions">
-            <button class="btn btn-secondary">KI-Vorschläge</button>
-            <button class="btn btn-secondary">Bericht</button>
+        </div>
+        
+        <!-- Project Tabs -->
+        <div class="project-tabs mb-4">
+          <div class="tab active" data-tab="kanban">Kanban-Board</div>
+          <div class="tab" data-tab="documents">Dokumente</div>
+          <div class="tab" data-tab="timeline">Zeitplan</div>
+          <div class="tab" data-tab="settings">Einstellungen</div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content active" id="kanban">
+          <!-- Kanban Board -->
+          <div class="project-board">
+            <!-- To Do Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Zu erledigen</span>
+                <span class="project-column-count">4</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Wireframes für Homepage erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                    </div>
+                    <div>15. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-medium">
+                  <div class="project-item-title">API-Dokumentation aktualisieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>18. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Marketingplan für Q2 erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">SL</div>
+                    </div>
+                    <div>20. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-low">
+                  <div class="project-item-title">Kundenfeedback analysieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">AK</div>
+                    </div>
+                    <div>22. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- In Progress Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>In Bearbeitung</span>
+                <span class="project-column-count">3</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Frontend-Komponenten entwickeln</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">JS</div>
+                      <div class="project-item-member">TW</div>
+                    </div>
+                    <div>12. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-medium">
+                  <div class="project-item-title">Datenbankschema optimieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">LK</div>
+                    </div>
+                    <div>14. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Social Media Content erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">SL</div>
+                    </div>
+                    <div>15. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Review Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Review</span>
+                <span class="project-column-count">2</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Login-Funktionalität testen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                      <div class="project-item-member">AK</div>
+                    </div>
+                    <div>10. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Designsystem überprüfen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">TW</div>
+                    </div>
+                    <div>11. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Done Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Erledigt</span>
+                <span class="project-column-count">3</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item">
+                  <div class="project-item-title">Projektplan erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                    </div>
+                    <div>5. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Anforderungsanalyse durchführen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>6. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Technologie-Stack definieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">LK</div>
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>8. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div class="tabs">
-          <div class="tab active">Kanban-Board</div>
-          <div class="tab">Zeitleiste</div>
-          <div class="tab">Dokumente</div>
-          <div class="tab">Team</div>
-          <div class="tab">Einstellungen</div>
+        <div class="tab-content" id="documents">
+          <!-- Documents Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projektdokumente</div>
+              <button class="btn btn-primary">+ Neues Dokument</button>
+            </div>
+            <div class="card-body">
+              <div class="document-filters mb-4">
+                <div class="document-search">
+                  <input type="text" placeholder="Dokumente durchsuchen..." class="document-search-input">
+                </div>
+                <div class="document-filter">
+                  <select class="document-filter-select">
+                    <option value="all">Alle Typen</option>
+                    <option value="doc">Dokumente</option>
+                    <option value="img">Bilder</option>
+                    <option value="pdf">PDFs</option>
+                  </select>
+                </div>
+                <div class="document-sort">
+                  <select class="document-sort-select">
+                    <option value="date-desc">Neueste zuerst</option>
+                    <option value="date-asc">Älteste zuerst</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="document-list">
+                <div class="document-item">
+                  <div class="document-icon">📄</div>
+                  <div class="document-info">
+                    <div class="document-title">Projektanforderungen.docx</div>
+                    <div class="document-meta">
+                      <span>Dokument</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 5. März 2025</span>
+                      <span>•</span>
+                      <span>Max Mustermann</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📊</div>
+                  <div class="document-info">
+                    <div class="document-title">Marktanalyse.xlsx</div>
+                    <div class="document-meta">
+                      <span>Tabelle</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 6. März 2025</span>
+                      <span>•</span>
+                      <span>Anna Krause</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">🖼️</div>
+                  <div class="document-info">
+                    <div class="document-title">Logo_Entwürfe.zip</div>
+                    <div class="document-meta">
+                      <span>Archiv</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 7. März 2025</span>
+                      <span>•</span>
+                      <span>Thomas Weber</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📝</div>
+                  <div class="document-info">
+                    <div class="document-title">Meeting_Protokoll_08_03.md</div>
+                    <div class="document-meta">
+                      <span>Markdown</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 8. März 2025</span>
+                      <span>•</span>
+                      <span>Max Mustermann</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📑</div>
+                  <div class="document-info">
+                    <div class="document-title">Technische_Spezifikation.pdf</div>
+                    <div class="document-meta">
+                      <span>PDF</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 9. März 2025</span>
+                      <span>•</span>
+                      <span>Julia Schmidt</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div class="kanban-board" id="kanban-board">
-          <!-- Kanban columns will be loaded here -->
+        <div class="tab-content" id="timeline">
+          <!-- Timeline Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projektzeitplan</div>
+              <button class="btn btn-secondary">Exportieren</button>
+            </div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-date">1. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Projektstart</div>
+                    <div class="timeline-description">Offizieller Start des Website-Redesign-Projekts</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">5. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Anforderungsanalyse abgeschlossen</div>
+                    <div class="timeline-description">Alle Anforderungen wurden dokumentiert und priorisiert</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item active">
+                  <div class="timeline-date">10. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Design-Phase abgeschlossen</div>
+                    <div class="timeline-description">Wireframes und Design-Konzepte wurden finalisiert</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">15. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Entwicklungsphase abgeschlossen</div>
+                    <div class="timeline-description">Frontend- und Backend-Entwicklung abgeschlossen</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">20. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Testphase abgeschlossen</div>
+                    <div class="timeline-description">Alle Tests wurden durchgeführt und Fehler behoben</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">25. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Launch</div>
+                    <div class="timeline-description">Neue Website geht live</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="settings">
+          <!-- Settings Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projekteinstellungen</div>
+              <button class="btn btn-primary">Speichern</button>
+            </div>
+            <div class="card-body">
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="project-name">Projektname</label>
+                  <input type="text" id="project-name" value="Website Redesign" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-description">Beschreibung</label>
+                  <textarea id="project-description" class="form-control" rows="3">Komplettes Redesign der Unternehmenswebsite mit modernem UI/UX-Design und verbesserten Funktionen.</textarea>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="project-start-date">Startdatum</label>
+                    <input type="date" id="project-start-date" value="2025-03-01" class="form-control">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="project-end-date">Fälligkeitsdatum</label>
+                    <input type="date" id="project-end-date" value="2025-03-15" class="form-control">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-status">Status</label>
+                  <select id="project-status" class="form-control">
+                    <option value="planning">Planung</option>
+                    <option value="in-progress" selected>In Bearbeitung</option>
+                    <option value="on-hold">Pausiert</option>
+                    <option value="completed">Abgeschlossen</option>
+                    <option value="cancelled">Abgebrochen</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-priority">Priorität</label>
+                  <select id="project-priority" class="form-control">
+                    <option value="low">Niedrig</option>
+                    <option value="medium" selected>Mittel</option>
+                    <option value="high">Hoch</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-team">Teammitglieder</label>
+                  <select id="project-team" class="form-control" multiple>
+                    <option value="1" selected>Max Mustermann</option>
+                    <option value="2" selected>Julia Schmidt</option>
+                    <option value="3" selected>Anna Krause</option>
+                    <option value="4">Thomas Weber</option>
+                    <option value="5">Lisa König</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -903,6 +1612,382 @@
       loadProject();
       loadTasks();
     });
+
+    // Interaktive Elemente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Drag-and-Drop für Kanban-Karten
+      const draggables = document.querySelectorAll('.kanban-card');
+      const dropzones = document.querySelectorAll('.kanban-column-body');
+      
+      draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+          draggable.classList.add('dragging');
+        });
+        
+        draggable.addEventListener('dragend', () => {
+          draggable.classList.remove('dragging');
+        });
+      });
+      
+      dropzones.forEach(dropzone => {
+        dropzone.addEventListener('dragover', e => {
+          e.preventDefault();
+          const dragging = document.querySelector('.dragging');
+          dropzone.appendChild(dragging);
+        });
+      });
+      
+      // Tabs-Funktionalität
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Aktiven Tab entfernen
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          // Neuen Tab aktivieren
+          tab.classList.add('active');
+          const target = tab.getAttribute('data-tab');
+          document.getElementById(target).classList.add('active');
+        });
+      });
+      
+      // "Neue Aufgabe" Button
+      const newTaskBtn = document.getElementById('new-task-btn');
+      if (newTaskBtn) {
+        newTaskBtn.addEventListener('click', () => {
+          alert('Neue Aufgabe erstellen');
+        });
+      }
+    });
   </script>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-toggle" id="chatbot-toggle">💬</div>
+  
+  <div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+      <div class="chatbot-title">KI-Assistent</div>
+      <button class="chatbot-close" id="chatbot-close">×</button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="message bot">Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir mit diesem Projekt helfen?</div>
+    </div>
+    
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input-field" placeholder="Schreibe eine Nachricht...">
+      <button class="chatbot-send" id="chatbot-send">➤</button>
+    </div>
+  </div>
+  
+  <style>
+    /* Chatbot Styles */
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      z-index: 999;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    
+    .chatbot-toggle:hover {
+      transform: scale(1.1);
+      background-color: var(--primary-hover);
+    }
+    
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 350px;
+      height: 500px;
+      background-color: var(--background-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 998;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s;
+    }
+    
+    .chatbot-container.active {
+      transform: scale(1);
+    }
+    
+    .chatbot-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .chatbot-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .chatbot-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+    }
+    
+    .message.bot {
+      align-self: flex-start;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message.user {
+      align-self: flex-end;
+      background-color: var(--primary-color);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .chatbot-input {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+    }
+    
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+    }
+    
+    .chatbot-input input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .chatbot-send {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .chatbot-send:hover {
+      background-color: var(--primary-hover);
+    }
+  </style>
+  
+  <script>
+    // Chatbot-Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatbotToggle = document.getElementById('chatbot-toggle');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const chatbotClose = document.getElementById('chatbot-close');
+      const chatbotMessages = document.getElementById('chatbot-messages');
+      const chatbotInputField = document.getElementById('chatbot-input-field');
+      const chatbotSend = document.getElementById('chatbot-send');
+      
+      // Chatbot-Verlauf im localStorage speichern
+      let chatHistory = JSON.parse(localStorage.getItem('projectChatHistory')) || [];
+      let userName = localStorage.getItem('userName') || '';
+      
+      // Chatbot öffnen/schließen
+      chatbotToggle.addEventListener('click', function() {
+        chatbotContainer.classList.add('active');
+        
+        // Beim ersten Öffnen nach Benutzernamen fragen, wenn noch nicht bekannt
+        if (!userName) {
+          setTimeout(() => {
+            addBotMessage('Wie darf ich dich nennen?');
+            localStorage.setItem('awaitingName', 'true');
+          }, 1000);
+        }
+      });
+      
+      chatbotClose.addEventListener('click', function() {
+        chatbotContainer.classList.remove('active');
+      });
+      
+      // Chat-Verlauf laden
+      function loadChatHistory() {
+        chatbotMessages.innerHTML = '';
+        
+        if (chatHistory.length === 0) {
+          addBotMessage('Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir mit diesem Projekt helfen?', false);
+        } else {
+          chatHistory.forEach(message => {
+            if (message.sender === 'bot') {
+              addBotMessage(message.text, false);
+            } else {
+              addUserMessage(message.text, false);
+            }
+          });
+        }
+      }
+      
+      // Chat-Verlauf laden
+      loadChatHistory();
+      
+      // Nachricht senden
+      function sendMessage() {
+        const message = chatbotInputField.value.trim();
+        if (!message) return;
+        
+        addUserMessage(message);
+        chatbotInputField.value = '';
+        
+        // Auf Benutzernamen warten
+        if (localStorage.getItem('awaitingName') === 'true') {
+          userName = message;
+          localStorage.setItem('userName', userName);
+          localStorage.removeItem('awaitingName');
+          
+          setTimeout(() => {
+            addBotMessage(`Hallo ${userName}! Schön, dich kennenzulernen. Wie kann ich dir mit dem Website-Redesign-Projekt helfen?`);
+          }, 1000);
+          return;
+        }
+        
+        // Antwort generieren
+        setTimeout(() => {
+          let response;
+          
+          if (message.toLowerCase().includes('aufgabe') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu'))) {
+            response = `Kein Problem, ${userName}! Du kannst eine neue Aufgabe erstellen, indem du auf den "+ Aufgabe hinzufügen" Button in einer der Spalten des Kanban-Boards klickst. Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Hinzufügen einer Aufgabe nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('.add-project-item').click();
+            }, 2000);
+          } else if (message.toLowerCase().includes('dokument') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu') || message.toLowerCase().includes('hochladen'))) {
+            response = `Natürlich ${userName}! Um ein neues Dokument hochzuladen oder zu erstellen, wechsle zum Dokumente-Tab und klicke auf den "+ Neues Dokument" Button. Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Öffnen des Dokumente-Tabs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="documents"]').click();
+              setTimeout(() => {
+                document.querySelector('#documents .btn-primary').click();
+              }, 1000);
+            }, 1000);
+          } else if (message.toLowerCase().includes('zeitplan') || message.toLowerCase().includes('timeline')) {
+            response = `Der Projektzeitplan zeigt dir alle wichtigen Meilensteine und Termine, ${userName}. Ich öffne den Zeitplan-Tab für dich.`;
+            
+            // Simuliere das Öffnen des Zeitplan-Tabs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="timeline"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('einstellung')) {
+            response = `In den Projekteinstellungen kannst du grundlegende Informationen wie Name, Beschreibung, Daten und Teammitglieder bearbeiten, ${userName}. Ich öffne die Einstellungen für dich.`;
+            
+            // Simuliere das Öffnen der Einstellungen nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="settings"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('kanban')) {
+            response = `Das Kanban-Board hilft dir, den Fortschritt deiner Aufgaben zu visualisieren, ${userName}. Du kannst Aufgaben per Drag & Drop zwischen den verschiedenen Spalten verschieben. Ich öffne das Kanban-Board für dich.`;
+            
+            // Simuliere das Öffnen des Kanban-Boards nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="kanban"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('danke') || message.toLowerCase().includes('dank')) {
+            response = `Gerne, ${userName}! Ich bin immer hier, wenn du Hilfe mit dem Website-Redesign-Projekt brauchst.`;
+          } else if (message.toLowerCase().includes('hallo') || message.toLowerCase().includes('hi')) {
+            response = `Hallo ${userName}! Schön, dich wiederzusehen. Wie kann ich dir heute mit dem Website-Redesign-Projekt helfen?`;
+          } else {
+            response = `Ich verstehe deine Frage zu "${message}", ${userName}. Als KI-Assistent für dieses Projekt kann ich dir bei der Verwaltung von Aufgaben, Dokumenten und dem Zeitplan helfen. Ich kann auch direkt Aktionen für dich ausführen. Was möchtest du tun?`;
+          }
+          
+          addBotMessage(response);
+        }, 1000);
+      }
+      
+      // Benutzer-Nachricht hinzufügen
+      function addUserMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message user';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'user', text });
+          localStorage.setItem('projectChatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Bot-Nachricht hinzufügen
+      function addBotMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message bot';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'bot', text });
+          localStorage.setItem('projectChatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Event-Listener für Senden-Button
+      chatbotSend.addEventListener('click', sendMessage);
+      
+      // Event-Listener für Enter-Taste
+      chatbotInputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+  </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
 </body>
 </html> 

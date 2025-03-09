@@ -705,6 +705,98 @@ Das Hauptziel dieses Projekts ist die Entwicklung eines umfassenden Projektmanag
         hljs.highlightBlock(block);
       });
     });
+
+    // Interaktive Elemente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Editor-Funktionalität
+      const boldBtn = document.getElementById('bold-btn');
+      const italicBtn = document.getElementById('italic-btn');
+      const underlineBtn = document.getElementById('underline-btn');
+      const h1Btn = document.getElementById('h1-btn');
+      const h2Btn = document.getElementById('h2-btn');
+      const h3Btn = document.getElementById('h3-btn');
+      const linkBtn = document.getElementById('link-btn');
+      const imageBtn = document.getElementById('image-btn');
+      const listBtn = document.getElementById('list-btn');
+      const codeBtn = document.getElementById('code-btn');
+      const editor = document.getElementById('document-editor');
+      
+      boldBtn.addEventListener('click', () => {
+        document.execCommand('bold', false, null);
+        editor.focus();
+      });
+      
+      italicBtn.addEventListener('click', () => {
+        document.execCommand('italic', false, null);
+        editor.focus();
+      });
+      
+      underlineBtn.addEventListener('click', () => {
+        document.execCommand('underline', false, null);
+        editor.focus();
+      });
+      
+      h1Btn.addEventListener('click', () => {
+        document.execCommand('formatBlock', false, '<h1>');
+        editor.focus();
+      });
+      
+      h2Btn.addEventListener('click', () => {
+        document.execCommand('formatBlock', false, '<h2>');
+        editor.focus();
+      });
+      
+      h3Btn.addEventListener('click', () => {
+        document.execCommand('formatBlock', false, '<h3>');
+        editor.focus();
+      });
+      
+      linkBtn.addEventListener('click', () => {
+        const url = prompt('URL eingeben:', 'http://');
+        if (url) {
+          document.execCommand('createLink', false, url);
+        }
+        editor.focus();
+      });
+      
+      imageBtn.addEventListener('click', () => {
+        const url = prompt('Bild-URL eingeben:', 'http://');
+        if (url) {
+          document.execCommand('insertImage', false, url);
+        }
+        editor.focus();
+      });
+      
+      listBtn.addEventListener('click', () => {
+        document.execCommand('insertUnorderedList', false, null);
+        editor.focus();
+      });
+      
+      codeBtn.addEventListener('click', () => {
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        const codeElement = document.createElement('code');
+        codeElement.textContent = range.toString();
+        range.deleteContents();
+        range.insertNode(codeElement);
+        editor.focus();
+      });
+      
+      // Speichern-Button
+      const saveBtn = document.getElementById('save-btn');
+      saveBtn.addEventListener('click', () => {
+        alert('Dokument gespeichert!');
+      });
+      
+      // KI-Zusammenfassung-Button
+      const aiSummaryBtn = document.getElementById('ai-summary-btn');
+      aiSummaryBtn.addEventListener('click', () => {
+        alert('KI-Zusammenfassung wird generiert...');
+      });
+    });
   </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
 </body>
 </html> 

@@ -749,65 +749,65 @@
   </div>
 
   <script>
-    // Event-Listener für das Öffnen des Modals
-    document.getElementById('new-event-btn').addEventListener('click', function() {
-      const modal = document.getElementById('event-modal');
-      modal.classList.add('active');
+    // Kalender-Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      // Event-Modal öffnen
+      const eventButtons = document.querySelectorAll('.calendar-event');
+      const eventModal = document.getElementById('event-modal');
+      const closeModal = document.getElementById('modal-close');
       
-      // Aktuelles Datum setzen
-      const today = new Date();
-      const dateString = today.toISOString().split('T')[0];
-      document.getElementById('event-date').value = dateString;
-    });
-    
-    // Event-Listener für das Schließen des Modals
-    document.getElementById('modal-close').addEventListener('click', function() {
-      const modal = document.getElementById('event-modal');
-      modal.classList.remove('active');
-    });
-    
-    document.getElementById('cancel-event').addEventListener('click', function() {
-      const modal = document.getElementById('event-modal');
-      modal.classList.remove('active');
-    });
-    
-    // Event-Listener für das Speichern eines Events (simuliert)
-    document.getElementById('save-event').addEventListener('click', function() {
-      const title = document.getElementById('event-title').value;
-      const type = document.getElementById('event-type').value;
-      const date = document.getElementById('event-date').value;
-      
-      if (title && date) {
-        alert(`Termin "${title}" vom Typ "${type}" am ${date} wurde gespeichert.`);
-        
-        const modal = document.getElementById('event-modal');
-        modal.classList.remove('active');
-      } else {
-        alert('Bitte füllen Sie alle Pflichtfelder aus.');
-      }
-    });
-    
-    // Event-Listener für bestehende Kalender-Events
-    document.querySelectorAll('.calendar-event').forEach(event => {
-      event.addEventListener('click', function(e) {
-        e.stopPropagation();
-        alert(`Event-Details: ${this.textContent}`);
+      eventButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const eventTitle = this.querySelector('.event-title').textContent;
+          const eventTime = this.querySelector('.event-time').textContent;
+          const eventType = this.classList.contains('event-meeting') ? 'Besprechung' : 
+                           this.classList.contains('event-deadline') ? 'Deadline' : 
+                           this.classList.contains('event-milestone') ? 'Meilenstein' : 'Ereignis';
+          
+          document.getElementById('modal-event-title').textContent = eventTitle;
+          document.getElementById('modal-event-time').textContent = eventTime;
+          document.getElementById('modal-event-type').textContent = eventType;
+          
+          eventModal.classList.add('show');
+        });
       });
-    });
-    
-    // Event-Listener für Kalendertage
-    document.querySelectorAll('.calendar-day').forEach(day => {
-      day.addEventListener('click', function() {
-        const dayNumber = this.querySelector('.calendar-day-number').textContent;
-        const modal = document.getElementById('event-modal');
-        modal.classList.add('active');
-        
-        // Datum für den ausgewählten Tag setzen
-        const date = new Date(2025, 2, parseInt(dayNumber));
-        const dateString = date.toISOString().split('T')[0];
-        document.getElementById('event-date').value = dateString;
+      
+      // Event-Modal schließen
+      closeModal.addEventListener('click', function() {
+        eventModal.classList.remove('show');
+      });
+      
+      // Modal schließen, wenn außerhalb geklickt wird
+      window.addEventListener('click', function(e) {
+        if (e.target === eventModal) {
+          eventModal.classList.remove('show');
+        }
+      });
+      
+      // Heute-Button
+      document.getElementById('today-btn').addEventListener('click', function() {
+        alert('Zum heutigen Tag navigieren');
+      });
+      
+      // Ansicht wechseln
+      const viewButtons = document.querySelectorAll('.view-btn');
+      viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          viewButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          alert(`Ansicht gewechselt zu: ${this.textContent}`);
+        });
+      });
+      
+      // Neues Ereignis erstellen
+      document.getElementById('new-event-btn').addEventListener('click', function() {
+        alert('Neues Ereignis erstellen');
       });
     });
   </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
 </body>
 </html> 
