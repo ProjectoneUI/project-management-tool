@@ -119,4 +119,4 @@ Die KI-Funktionen sind über verschiedene Bereiche der Anwendung zugänglich:
 - Über den KI-Assistent in der Seitenleiste
 - Direkt in Projekten über den KI-Assistent-Button
 - In der Dokumentenansicht für Zusammenfassungen
-- In der Projektübersicht für Berichte und Vorschläge 
+- In der Projektübersicht für Berichte und Vorschläge
