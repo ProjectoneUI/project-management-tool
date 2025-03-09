@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dokumentation - Projektmanagement-Tool</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #0052CC;
+      --primary-hover: #0747A6;
+      --secondary-color: #6554C0;
+      --success-color: #36B37E;
+      --warning-color: #FFAB00;
+      --danger-color: #FF5630;
+      --text-color: #172B4D;
+      --text-secondary: #6B778C;
+      --background-color: #F4F5F7;
+      --background-light: #FFFFFF;
+      --border-color: #DFE1E6;
+      --sidebar-width: 240px;
+      --header-height: 56px;
+      --border-radius: 3px;
+      --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
+      --shadow-md: 0 3px 5px rgba(9, 30, 66, 0.12);
+      --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.16);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--background-light);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      height: 100vh;
+      z-index: 10;
+    }
+    
+    .sidebar-header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu {
+      padding: 16px 0;
+    }
+    
+    .sidebar-menu-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      color: var(--text-color);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .sidebar-menu-item.active {
+      background-color: rgba(9, 30, 66, 0.08);
+      border-left-color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .sidebar-menu-item-icon {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+    }
+    
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background-color: var(--background-light);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Content */
+    .content {
+      padding: 24px;
+      display: flex;
+    }
+    
+    /* Document Sidebar */
+    .document-sidebar {
+      width: 240px;
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      margin-right: 24px;
+      height: fit-content;
+      position: sticky;
+      top: 80px;
+    }
+    
+    .document-sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    
+    .document-sidebar-content {
+      padding: 16px;
+    }
+    
+    .document-tree {
+      list-style: none;
+    }
+    
+    .document-tree-item {
+      margin-bottom: 8px;
+    }
+    
+    .document-tree-item a {
+      color: var(--text-color);
+      text-decoration: none;
+      display: block;
+      padding: 6px 8px;
+      border-radius: var(--border-radius);
+    }
+    
+    .document-tree-item a:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .document-tree-item a.active {
+      background-color: rgba(9, 30, 66, 0.08);
+      font-weight: 500;
+    }
+    
+    .document-tree-item-children {
+      list-style: none;
+      margin-left: 16px;
+      margin-top: 8px;
+    }
+    
+    /* Document Content */
+    .document-content {
+      flex: 1;
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+    }
+    
+    .document-header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .document-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .document-meta {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    
+    .document-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    
+    .document-tag {
+      background-color: #E9F2FF;
+      color: var(--primary-color);
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .document-body {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    /* Markdown Styles */
+    .markdown-content h1 {
+      font-size: 24px;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .markdown-content h2 {
+      font-size: 20px;
+      margin-top: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content h3 {
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .markdown-content p {
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content ul, .markdown-content ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+    
+    .markdown-content li {
+      margin-bottom: 8px;
+    }
+    
+    .markdown-content code {
+      background-color: #F4F5F7;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 14px;
+    }
+    
+    .markdown-content pre {
+      background-color: #F4F5F7;
+      padding: 16px;
+      border-radius: 3px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content pre code {
+      background-color: transparent;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .markdown-content blockquote {
+      border-left: 4px solid var(--border-color);
+      padding-left: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content img {
+      max-width: 100%;
+      border-radius: 3px;
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+    
+    .markdown-content th, .markdown-content td {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    
+    .markdown-content th {
+      background-color: #F4F5F7;
+      font-weight: 600;
+    }
+    
+    /* Document Actions */
+    .document-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Document Versions */
+    .document-versions {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .document-versions-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    .document-versions-list {
+      list-style: none;
+    }
+    
+    .document-version {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .document-version:last-child {
+      border-bottom: none;
+    }
+    
+    .document-version-number {
+      background-color: #E9F2FF;
+      color: var(--primary-color);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 12px;
+    }
+    
+    .document-version-content {
+      flex: 1;
+    }
+    
+    .document-version-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    
+    .document-version-author {
+      font-weight: 500;
+    }
+    
+    .document-version-date {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .document-version-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(9, 30, 66, 0.04);
+      color: var(--text-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+    }
+    
+    /* Utilities */
+    .mt-4 {
+      margin-top: 16px;
+    }
+    
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">PM Tool</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📊</div>
+          <span>Dashboard</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📋</div>
+          <span>Projekte</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">✅</div>
+          <span>Aufgaben</span>
+        </div>
+        <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item-icon">📄</div>
+          <span>Dokumente</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📅</div>
+          <span>Kalender</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">🤖</div>
+          <span>KI-Assistent</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <div class="header-title">Dokumentation</div>
+        <div class="header-actions">
+          <button class="btn btn-secondary">Exportieren</button>
+          <button class="btn btn-primary">Bearbeiten</button>
+        </div>
+      </div>
+      
+      <div class="content">
+        <!-- Document Sidebar -->
+        <div class="document-sidebar">
+          <div class="document-sidebar-header">
+            Dokumentenbaum
+          </div>
+          <div class="document-sidebar-content">
+            <ul class="document-tree">
+              <li class="document-tree-item">
+                <a href="#" class="active">Projektübersicht</a>
+                <ul class="document-tree-item-children">
+                  <li class="document-tree-item">
+                    <a href="#">Ziele und Umfang</a>
+                  </li>
+                  <li class="document-tree-item">
+                    <a href="#">Stakeholder</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="document-tree-item">
+                <a href="#">Technische Dokumentation</a>
+                <ul class="document-tree-item-children">
+                  <li class="document-tree-item">
+                    <a href="#">Architektur</a>
+                  </li>
+                  <li class="document-tree-item">
+                    <a href="#">API-Referenz</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="document-tree-item">
+                <a href="#">Benutzerhandbuch</a>
+              </li>
+              <li class="document-tree-item">
+                <a href="#">Meeting-Protokolle</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Document Content -->
+        <div class="document-content">
+          <div class="document-header">
+            <div>
+              <h1 class="document-title">Projektübersicht</h1>
+              <div class="document-meta">
+                Erstellt von Max Mustermann · Zuletzt bearbeitet am 15. März 2025
+              </div>
+              <div class="document-tags">
+                <span class="document-tag">Dokumentation</span>
+                <span class="document-tag">Projekt</span>
+                <span class="document-tag">Übersicht</span>
+              </div>
+            </div>
+            <div class="document-actions">
+              <button class="btn btn-secondary">Verlauf</button>
+              <button class="btn btn-secondary">KI-Zusammenfassung</button>
+            </div>
+          </div>
+          
+          <div class="document-body">
+            <div class="markdown-content" id="markdown-content">
+              <!-- Markdown content will be rendered here -->
+            </div>
+          </div>
+          
+          <div class="document-versions">
+            <h2 class="document-versions-title">Versionen</h2>
+            <ul class="document-versions-list">
+              <li class="document-version">
+                <div class="document-version-number">v3</div>
+                <div class="document-version-content">
+                  <div class="document-version-meta">
+                    <div class="document-version-author">Max Mustermann</div>
+                    <div class="document-version-date">15. März 2025, 14:30</div>
+                  </div>
+                  <div class="document-version-description">Aktualisierung der Projektziele und Hinzufügen von Meilensteinen</div>
+                </div>
+              </li>
+              <li class="document-version">
+                <div class="document-version-number">v2</div>
+                <div class="document-version-content">
+                  <div class="document-version-meta">
+                    <div class="document-version-author">Anna Schmidt</div>
+                    <div class="document-version-date">10. März 2025, 09:15</div>
+                  </div>
+                  <div class="document-version-description">Ergänzung der Stakeholder-Informationen</div>
+                </div>
+              </li>
+              <li class="document-version">
+                <div class="document-version-number">v1</div>
+                <div class="document-version-content">
+                  <div class="document-version-meta">
+                    <div class="document-version-author">Max Mustermann</div>
+                    <div class="document-version-date">5. März 2025, 11:45</div>
+                  </div>
+                  <div class="document-version-description">Initiale Erstellung des Dokuments</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Beispiel-Markdown-Inhalt
+    const markdownContent = `
+# Projektübersicht
+
+## Einleitung
+
+Dieses Dokument bietet einen Überblick über das Projekt "Projektmanagement-Tool". Es dient als zentrale Referenz für alle Projektbeteiligten und enthält Informationen zu Zielen, Umfang, Zeitplan und Ressourcen.
+
+## Projektziele
+
+Das Hauptziel dieses Projekts ist die Entwicklung eines umfassenden Projektmanagement-Tools, das Teams dabei unterstützt, ihre Projekte effizienter zu planen, zu verfolgen und abzuschließen. Spezifische Ziele umfassen:
+
+- Verbesserung der Projektplanung und -verfolgung
+- Optimierung der Ressourcenzuweisung
+- Verbesserung der Teamkommunikation
+- Integration von KI-Funktionen zur Unterstützung der Entscheidungsfindung
+
+## Projektumfang
+
+### Eingeschlossen
+
+- Benutzerauthentifizierung und -verwaltung
+- Projektplanung und -verfolgung
+- Aufgabenverwaltung mit Kanban-Board
+- Dokumentenverwaltung mit Wiki-Funktionalität
+- Kalender und Terminplanung
+- Team-Kommunikation
+- KI-gestützte Berichterstellung
+- OneDrive-Integration
+
+### Ausgeschlossen
+
+- Mobile App (wird in einer späteren Phase entwickelt)
+- Integration mit externen Buchhaltungssystemen
+- Erweiterte Ressourcenplanung
+
+## Zeitplan
+
+| Meilenstein | Beschreibung | Geplantes Datum |
+|-------------|--------------|-----------------|
+| Projektstart | Kick-off-Meeting und Anforderungsanalyse | 01.01.2025 |
+| Alpha-Version | Erste funktionsfähige Version mit Kernfunktionen | 30.04.2025 |
+| Beta-Version | Vollständige Funktionalität mit Benutzertests | 15.08.2025 |
+| Release | Produktionsversion und Markteinführung | 01.12.2025 |
+
+## Stakeholder
+
+### Interne Stakeholder
+
+- Projektteam
+- Management
+- IT-Abteilung
+- Qualitätssicherung
+
+### Externe Stakeholder
+
+- Endbenutzer
+- Kunden
+- Partner
+
+## Ressourcen
+
+### Team
+
+- 1 Projektmanager
+- 2 Frontend-Entwickler
+- 2 Backend-Entwickler
+- 1 UI/UX-Designer
+- 1 QA-Tester
+
+### Technologien
+
+- Frontend: React mit TypeScript
+- Backend: Node.js mit Express
+- Datenbank: MongoDB
+- KI: Ollama (lokale Open-Source-KI)
+- Speicher: OneDrive-Integration
+- Hosting: Kostenlose Tiers von Vercel (Frontend) und Render (Backend)
+
+## Risiken und Abhilfemaßnahmen
+
+| Risiko | Wahrscheinlichkeit | Auswirkung | Abhilfemaßnahme |
+|--------|-------------------|------------|-----------------|
+| Verzögerungen bei der Entwicklung | Mittel | Hoch | Agile Entwicklungsmethodik, regelmäßige Sprints |
+| Technische Herausforderungen | Hoch | Mittel | Frühzeitige Prototypen, technische Machbarkeitsstudien |
+| Ressourcenmangel | Niedrig | Hoch | Klare Ressourcenplanung, Backup-Ressourcen identifizieren |
+| Änderungen der Anforderungen | Mittel | Mittel | Regelmäßige Stakeholder-Reviews, Change-Management-Prozess |
+
+## Kommunikationsplan
+
+- Wöchentliche Team-Meetings (Montag, 10:00 Uhr)
+- Zweiwöchentliche Stakeholder-Updates
+- Monatliche Fortschrittsberichte
+- Projektmanagement-Tool für tägliche Kommunikation und Aufgabenverfolgung
+
+## Genehmigungen
+
+| Name | Rolle | Datum | Unterschrift |
+|------|-------|-------|-------------|
+| Max Mustermann | Projektleiter | 01.01.2025 | ____________ |
+| Anna Schmidt | Sponsor | 01.01.2025 | ____________ |
+| Thomas Müller | Technischer Leiter | 01.01.2025 | ____________ |
+    `;
+    
+    // Markdown rendern
+    document.addEventListener('DOMContentLoaded', function() {
+      const markdownContentElement = document.getElementById('markdown-content');
+      markdownContentElement.innerHTML = marked.parse(markdownContent);
+      
+      // Code-Highlighting anwenden
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    });
+  </script>
+</body>
+</html> 

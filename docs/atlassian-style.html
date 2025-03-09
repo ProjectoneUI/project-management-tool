@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projektmanagement-Tool</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary-color: #0052CC;
+      --primary-hover: #0747A6;
+      --secondary-color: #6554C0;
+      --success-color: #36B37E;
+      --warning-color: #FFAB00;
+      --danger-color: #FF5630;
+      --text-color: #172B4D;
+      --text-secondary: #6B778C;
+      --background-color: #F4F5F7;
+      --background-light: #FFFFFF;
+      --border-color: #DFE1E6;
+      --sidebar-width: 240px;
+      --header-height: 56px;
+      --border-radius: 3px;
+      --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
+      --shadow-md: 0 3px 5px rgba(9, 30, 66, 0.12);
+      --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.16);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--background-light);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      height: 100vh;
+      z-index: 10;
+    }
+    
+    .sidebar-header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu {
+      padding: 16px 0;
+    }
+    
+    .sidebar-menu-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      color: var(--text-color);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .sidebar-menu-item.active {
+      background-color: rgba(9, 30, 66, 0.08);
+      border-left-color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .sidebar-menu-item-icon {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+    }
+    
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background-color: var(--background-light);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Content */
+    .content {
+      padding: 24px;
+    }
+    
+    /* Page Header */
+    .page-header {
+      margin-bottom: 24px;
+    }
+    
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .page-description {
+      color: var(--text-secondary);
+    }
+    
+    /* Cards */
+    .card {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    
+    .card-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .card-body {
+      padding: 16px;
+    }
+    
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    
+    /* Project Card */
+    .project-card {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .project-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    
+    .project-card-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .project-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .project-card-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .project-card-body {
+      padding: 16px;
+    }
+    
+    .project-card-description {
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    
+    .project-card-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Task List */
+    .task-list {
+      list-style: none;
+    }
+    
+    .task-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .task-item:last-child {
+      border-bottom: none;
+    }
+    
+    .task-checkbox {
+      margin-right: 12px;
+      margin-top: 3px;
+    }
+    
+    .task-content {
+      flex: 1;
+    }
+    
+    .task-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .task-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+    
+    .task-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .task-status.todo {
+      background-color: #DEEBFF;
+      color: #0747A6;
+    }
+    
+    .task-status.in-progress {
+      background-color: #FFF0B3;
+      color: #172B4D;
+    }
+    
+    .task-status.done {
+      background-color: #E3FCEF;
+      color: #006644;
+    }
+    
+    /* AI Assistant */
+    .ai-assistant {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+    
+    .ai-assistant-header {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 16px;
+      font-weight: 600;
+    }
+    
+    .ai-assistant-body {
+      padding: 16px;
+    }
+    
+    .ai-input-container {
+      display: flex;
+      margin-bottom: 16px;
+    }
+    
+    .ai-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .ai-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .ai-submit {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .ai-submit:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .ai-response {
+      background-color: #F4F5F7;
+      border-radius: var(--border-radius);
+      padding: 16px;
+      margin-top: 16px;
+      display: none;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(9, 30, 66, 0.04);
+      color: var(--text-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .badge-blue {
+      background-color: #DEEBFF;
+      color: #0747A6;
+    }
+    
+    .badge-green {
+      background-color: #E3FCEF;
+      color: #006644;
+    }
+    
+    .badge-yellow {
+      background-color: #FFF0B3;
+      color: #172B4D;
+    }
+    
+    .badge-red {
+      background-color: #FFEBE6;
+      color: #BF2600;
+    }
+    
+    /* Utilities */
+    .mt-4 {
+      margin-top: 16px;
+    }
+    
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">PM Tool</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item-icon">📊</div>
+          <span>Dashboard</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📋</div>
+          <span>Projekte</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">✅</div>
+          <span>Aufgaben</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📄</div>
+          <span>Dokumente</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📅</div>
+          <span>Kalender</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">🤖</div>
+          <span>KI-Assistent</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <div class="header-title">Dashboard</div>
+        <div class="header-actions">
+          <button class="btn btn-primary">+ Neues Projekt</button>
+        </div>
+      </div>
+      
+      <div class="content">
+        <div class="page-header">
+          <h1 class="page-title">Willkommen zurück, Max</h1>
+          <p class="page-description">Hier ist ein Überblick über Ihre Projekte und Aufgaben.</p>
+        </div>
+        
+        <!-- AI Assistant -->
+        <div class="ai-assistant mb-4">
+          <div class="ai-assistant-header">
+            KI-Assistent
+          </div>
+          <div class="ai-assistant-body">
+            <div class="ai-input-container">
+              <input type="text" id="ai-prompt" class="ai-input" placeholder="Stellen Sie eine Frage...">
+              <button id="ai-submit" class="ai-submit">Senden</button>
+            </div>
+            <div class="ai-response" id="ai-response">
+              <p id="ai-text"></p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Projects Section -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">Meine Projekte</div>
+            <button class="btn btn-secondary">Alle anzeigen</button>
+          </div>
+          <div class="card-body">
+            <div class="grid" id="projects-container">
+              <!-- Projects will be loaded here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Tasks Section -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Meine Aufgaben</div>
+            <button class="btn btn-secondary">Alle anzeigen</button>
+          </div>
+          <div class="card-body">
+            <ul class="task-list" id="tasks-container">
+              <!-- Tasks will be loaded here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000/api';
+    
+    // Projekte laden
+    async function loadProjects() {
+      try {
+        const response = await fetch(`${API_URL}/projects`);
+        const data = await response.json();
+        
+        const projectsContainer = document.getElementById('projects-container');
+        projectsContainer.innerHTML = '';
+        
+        data.data.forEach(project => {
+          const projectElement = document.createElement('div');
+          projectElement.className = 'project-card';
+          projectElement.onclick = () => {
+            window.location.href = `project-detail.html?id=${project.id}`;
+          };
+          projectElement.innerHTML = `
+            <div class="project-card-header">
+              <div class="project-card-title">${project.name}</div>
+              <div class="project-card-subtitle">Projekt #${project.id}</div>
+            </div>
+            <div class="project-card-body">
+              <div class="project-card-description">${project.description}</div>
+              <div class="badge badge-blue">In Bearbeitung</div>
+            </div>
+            <div class="project-card-footer">
+              <div>5 Aufgaben</div>
+              <div>Fällig: 15. März 2025</div>
+            </div>
+          `;
+          projectsContainer.appendChild(projectElement);
+        });
+      } catch (error) {
+        console.error('Fehler beim Laden der Projekte:', error);
+      }
+    }
+    
+    // Aufgaben laden
+    async function loadTasks() {
+      try {
+        const response = await fetch(`${API_URL}/tasks`);
+        const data = await response.json();
+        
+        const tasksContainer = document.getElementById('tasks-container');
+        tasksContainer.innerHTML = '';
+        
+        data.data.forEach(task => {
+          const taskElement = document.createElement('li');
+          taskElement.className = 'task-item';
+          
+          const statusClass = 
+            task.status === 'todo' ? 'todo' : 
+            task.status === 'in-progress' ? 'in-progress' : 
+            'done';
+          
+          const statusText = 
+            task.status === 'todo' ? 'Zu erledigen' : 
+            task.status === 'in-progress' ? 'In Bearbeitung' : 
+            'Erledigt';
+          
+          taskElement.innerHTML = `
+            <div class="task-checkbox">
+              <input type="checkbox" ${task.status === 'done' ? 'checked' : ''}>
+            </div>
+            <div class="task-content">
+              <div class="task-title">${task.title}</div>
+              <div class="task-description">${task.description}</div>
+              <div class="task-meta">
+                <span class="task-status ${statusClass}">${statusText}</span>
+                <span>Projekt: <a href="project-detail.html?id=${task.id}">Projekt ${task.id}</a></span>
+                <span>Fällig: 10. März 2025</span>
+              </div>
+            </div>
+          `;
+          tasksContainer.appendChild(taskElement);
+        });
+      } catch (error) {
+        console.error('Fehler beim Laden der Aufgaben:', error);
+      }
+    }
+    
+    // KI-Text generieren
+    async function generateText() {
+      const promptInput = document.getElementById('ai-prompt');
+      const prompt = promptInput.value.trim();
+      
+      if (!prompt) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/ai/generate-text`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt }),
+        });
+        
+        const data = await response.json();
+        
+        const aiResponse = document.getElementById('ai-response');
+        const aiText = document.getElementById('ai-text');
+        
+        aiText.textContent = data.data.text;
+        aiResponse.style.display = 'block';
+      } catch (error) {
+        console.error('Fehler bei der KI-Anfrage:', error);
+      }
+    }
+    
+    // Event-Listener
+    document.getElementById('ai-submit').addEventListener('click', generateText);
+    document.getElementById('ai-prompt').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        generateText();
+      }
+    });
+    
+    // Daten beim Laden der Seite abrufen
+    window.addEventListener('load', () => {
+      loadProjects();
+      loadTasks();
+    });
+  </script>
+</body>
+</html> 
