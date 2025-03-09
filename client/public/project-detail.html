@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projektdetails - Projektmanagement-Tool</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary-color: #0052CC;
+      --primary-hover: #0747A6;
+      --secondary-color: #6554C0;
+      --success-color: #36B37E;
+      --warning-color: #FFAB00;
+      --danger-color: #FF5630;
+      --text-color: #172B4D;
+      --text-secondary: #6B778C;
+      --background-color: #F4F5F7;
+      --background-light: #FFFFFF;
+      --border-color: #DFE1E6;
+      --sidebar-width: 240px;
+      --header-height: 56px;
+      --border-radius: 3px;
+      --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
+      --shadow-md: 0 3px 5px rgba(9, 30, 66, 0.12);
+      --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.16);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--background-light);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      height: 100vh;
+      z-index: 10;
+    }
+    
+    .sidebar-header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu {
+      padding: 16px 0;
+    }
+    
+    .sidebar-menu-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      color: var(--text-color);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .sidebar-menu-item.active {
+      background-color: rgba(9, 30, 66, 0.08);
+      border-left-color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .sidebar-menu-item-icon {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+    }
+    
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background-color: var(--background-light);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Content */
+    .content {
+      padding: 24px;
+    }
+    
+    /* Project Header */
+    .project-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    
+    .project-title-section {
+      flex: 1;
+    }
+    
+    .project-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .project-key {
+      font-size: 14px;
+      color: var(--text-secondary);
+      background-color: var(--background-color);
+      padding: 2px 8px;
+      border-radius: var(--border-radius);
+      margin-left: 12px;
+    }
+    
+    .project-description {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    
+    .project-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .project-meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-meta-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    
+    .project-meta-value {
+      font-weight: 500;
+    }
+    
+    .project-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Project Tabs */
+    .project-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .tab:hover {
+      color: var(--primary-color);
+    }
+    
+    .tab.active {
+      color: var(--primary-color);
+      border-bottom-color: var(--primary-color);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Project Overview */
+    .project-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+    
+    .project-overview-item {
+      margin-bottom: 16px;
+    }
+    
+    .project-overview-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    
+    .project-overview-value {
+      font-weight: 500;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--success-color);
+    }
+    
+    .progress-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .project-team {
+      display: flex;
+    }
+    
+    .project-team-member {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: -8px;
+      border: 2px solid var(--background-light);
+    }
+    
+    .project-team-member:first-child {
+      margin-left: 0;
+    }
+    
+    /* Document Library */
+    .document-filters {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .document-search {
+      flex: 1;
+    }
+    
+    .document-search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+    }
+    
+    .document-search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .document-filter-select,
+    .document-sort-select {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      background-color: var(--background-light);
+    }
+    
+    .document-filter-select:focus,
+    .document-sort-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .document-list {
+      margin-top: 16px;
+    }
+    
+    .document-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
+    
+    .document-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .document-item:last-child {
+      border-bottom: none;
+    }
+    
+    .document-icon {
+      font-size: 24px;
+      margin-right: 16px;
+    }
+    
+    .document-info {
+      flex: 1;
+    }
+    
+    .document-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .document-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .document-meta span {
+      margin-right: 8px;
+    }
+    
+    .document-actions {
+      margin-left: 16px;
+    }
+    
+    .document-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 3px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .document-action-btn:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-color);
+    }
+    
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding: 16px 0;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 120px;
+      width: 2px;
+      background-color: var(--border-color);
+    }
+    
+    .timeline-item {
+      display: flex;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .timeline-date {
+      width: 120px;
+      padding-right: 24px;
+      text-align: right;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .timeline-content {
+      flex: 1;
+      padding-left: 24px;
+      position: relative;
+    }
+    
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      z-index: 1;
+    }
+    
+    .timeline-item.active .timeline-content::before {
+      background-color: var(--primary-color);
+    }
+    
+    .timeline-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .timeline-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Settings Form */
+    .settings-form {
+      max-width: 800px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    select.form-control[multiple] {
+      height: 120px;
+    }
+    
+    /* Kanban Board */
+    .kanban-board {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+    
+    .kanban-column {
+      min-width: 280px;
+      width: 280px;
+      background-color: var(--background-color);
+      border-radius: var(--border-radius);
+    }
+    
+    .kanban-column-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .kanban-column-count {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: var(--text-secondary);
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    
+    .kanban-column-body {
+      padding: 8px;
+      min-height: 200px;
+    }
+    
+    /* Kanban Card */
+    .kanban-card {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      transition: box-shadow 0.2s ease;
+    }
+    
+    .kanban-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    
+    .kanban-card-title {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    .kanban-card-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    
+    .kanban-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .kanban-card-assignee {
+      display: flex;
+      align-items: center;
+    }
+    
+    .kanban-card-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    
+    .kanban-add-card {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: var(--border-radius);
+    }
+    
+    .kanban-add-card:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+      color: var(--text-color);
+    }
+    
+    .kanban-add-card-icon {
+      margin-right: 8px;
+    }
+    
+    /* Task Detail Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(9, 30, 66, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text-secondary);
+    }
+    
+    .modal-body {
+      padding: 16px;
+    }
+    
+    .modal-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(9, 30, 66, 0.04);
+      color: var(--text-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #DE350B;
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .badge-blue {
+      background-color: #DEEBFF;
+      color: #0747A6;
+    }
+    
+    .badge-green {
+      background-color: #E3FCEF;
+      color: #006644;
+    }
+    
+    .badge-yellow {
+      background-color: #FFF0B3;
+      color: #172B4D;
+    }
+    
+    .badge-red {
+      background-color: #FFEBE6;
+      color: #BF2600;
+    }
+    
+    /* Utilities */
+    .mt-4 {
+      margin-top: 16px;
+    }
+    
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">PM Tool</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📊</div>
+          <span>Dashboard</span>
+        </div>
+        <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item-icon">📋</div>
+          <span>Projekte</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">✅</div>
+          <span>Aufgaben</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📄</div>
+          <span>Dokumente</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📅</div>
+          <span>Kalender</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">🤖</div>
+          <span>KI-Assistent</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <div class="header-title">Projektdetails</div>
+        <div class="header-actions">
+          <button class="btn btn-secondary">Exportieren</button>
+          <button class="btn btn-primary">Bearbeiten</button>
+        </div>
+      </div>
+      
+      <div class="content">
+        <div class="page-header">
+          <h1 class="page-title">Website Redesign</h1>
+          <p class="page-description">Komplettes Redesign der Unternehmenswebsite mit modernem UI/UX-Design und verbesserten Funktionen.</p>
+        </div>
+        
+        <!-- Project Overview -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">Projektübersicht</div>
+            <button class="btn btn-secondary">Bearbeiten</button>
+          </div>
+          <div class="card-body">
+            <div class="project-overview">
+              <div class="project-overview-item">
+                <div class="project-overview-label">Status</div>
+                <div class="project-overview-value">
+                  <span class="badge badge-blue">In Bearbeitung</span>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Fortschritt</div>
+                <div class="project-overview-value">
+                  <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 65%"></div>
+                  </div>
+                  <div class="progress-text">65%</div>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Startdatum</div>
+                <div class="project-overview-value">1. März 2025</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Fälligkeitsdatum</div>
+                <div class="project-overview-value">15. März 2025</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Priorität</div>
+                <div class="project-overview-value">
+                  <span class="badge badge-yellow">Mittel</span>
+                </div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Projektleiter</div>
+                <div class="project-overview-value">Max Mustermann</div>
+              </div>
+              
+              <div class="project-overview-item">
+                <div class="project-overview-label">Team</div>
+                <div class="project-overview-value">
+                  <div class="project-team">
+                    <div class="project-team-member">MM</div>
+                    <div class="project-team-member">JS</div>
+                    <div class="project-team-member">AK</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project Tabs -->
+        <div class="project-tabs mb-4">
+          <div class="tab active" data-tab="kanban">Kanban-Board</div>
+          <div class="tab" data-tab="documents">Dokumente</div>
+          <div class="tab" data-tab="timeline">Zeitplan</div>
+          <div class="tab" data-tab="settings">Einstellungen</div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content active" id="kanban">
+          <!-- Kanban Board -->
+          <div class="project-board">
+            <!-- To Do Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Zu erledigen</span>
+                <span class="project-column-count">4</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Wireframes für Homepage erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                    </div>
+                    <div>15. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-medium">
+                  <div class="project-item-title">API-Dokumentation aktualisieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>18. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Marketingplan für Q2 erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">SL</div>
+                    </div>
+                    <div>20. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-low">
+                  <div class="project-item-title">Kundenfeedback analysieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">AK</div>
+                    </div>
+                    <div>22. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- In Progress Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>In Bearbeitung</span>
+                <span class="project-column-count">3</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Frontend-Komponenten entwickeln</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">JS</div>
+                      <div class="project-item-member">TW</div>
+                    </div>
+                    <div>12. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item priority-medium">
+                  <div class="project-item-title">Datenbankschema optimieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">LK</div>
+                    </div>
+                    <div>14. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Social Media Content erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">SL</div>
+                    </div>
+                    <div>15. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Review Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Review</span>
+                <span class="project-column-count">2</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item priority-high">
+                  <div class="project-item-title">Login-Funktionalität testen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                      <div class="project-item-member">AK</div>
+                    </div>
+                    <div>10. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Designsystem überprüfen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">TW</div>
+                    </div>
+                    <div>11. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Done Column -->
+            <div class="project-column">
+              <div class="project-column-header">
+                <span>Erledigt</span>
+                <span class="project-column-count">3</span>
+              </div>
+              <div class="project-column-body">
+                <div class="project-item">
+                  <div class="project-item-title">Projektplan erstellen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                    </div>
+                    <div>5. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Anforderungsanalyse durchführen</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">MM</div>
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>6. März</div>
+                  </div>
+                </div>
+                
+                <div class="project-item">
+                  <div class="project-item-title">Technologie-Stack definieren</div>
+                  <div class="project-item-footer">
+                    <div class="project-item-members">
+                      <div class="project-item-member">LK</div>
+                      <div class="project-item-member">JS</div>
+                    </div>
+                    <div>8. März</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-column-footer">
+                <div class="add-project-item">
+                  <span>+</span>
+                  <span>Aufgabe hinzufügen</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="documents">
+          <!-- Documents Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projektdokumente</div>
+              <button class="btn btn-primary">+ Neues Dokument</button>
+            </div>
+            <div class="card-body">
+              <div class="document-filters mb-4">
+                <div class="document-search">
+                  <input type="text" placeholder="Dokumente durchsuchen..." class="document-search-input">
+                </div>
+                <div class="document-filter">
+                  <select class="document-filter-select">
+                    <option value="all">Alle Typen</option>
+                    <option value="doc">Dokumente</option>
+                    <option value="img">Bilder</option>
+                    <option value="pdf">PDFs</option>
+                  </select>
+                </div>
+                <div class="document-sort">
+                  <select class="document-sort-select">
+                    <option value="date-desc">Neueste zuerst</option>
+                    <option value="date-asc">Älteste zuerst</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="document-list">
+                <div class="document-item">
+                  <div class="document-icon">📄</div>
+                  <div class="document-info">
+                    <div class="document-title">Projektanforderungen.docx</div>
+                    <div class="document-meta">
+                      <span>Dokument</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 5. März 2025</span>
+                      <span>•</span>
+                      <span>Max Mustermann</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📊</div>
+                  <div class="document-info">
+                    <div class="document-title">Marktanalyse.xlsx</div>
+                    <div class="document-meta">
+                      <span>Tabelle</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 6. März 2025</span>
+                      <span>•</span>
+                      <span>Anna Krause</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">🖼️</div>
+                  <div class="document-info">
+                    <div class="document-title">Logo_Entwürfe.zip</div>
+                    <div class="document-meta">
+                      <span>Archiv</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 7. März 2025</span>
+                      <span>•</span>
+                      <span>Thomas Weber</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📝</div>
+                  <div class="document-info">
+                    <div class="document-title">Meeting_Protokoll_08_03.md</div>
+                    <div class="document-meta">
+                      <span>Markdown</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 8. März 2025</span>
+                      <span>•</span>
+                      <span>Max Mustermann</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+                
+                <div class="document-item">
+                  <div class="document-icon">📑</div>
+                  <div class="document-info">
+                    <div class="document-title">Technische_Spezifikation.pdf</div>
+                    <div class="document-meta">
+                      <span>PDF</span>
+                      <span>•</span>
+                      <span>Bearbeitet: 9. März 2025</span>
+                      <span>•</span>
+                      <span>Julia Schmidt</span>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="document-action-btn">⋮</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="timeline">
+          <!-- Timeline Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projektzeitplan</div>
+              <button class="btn btn-secondary">Exportieren</button>
+            </div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-date">1. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Projektstart</div>
+                    <div class="timeline-description">Offizieller Start des Website-Redesign-Projekts</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">5. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Anforderungsanalyse abgeschlossen</div>
+                    <div class="timeline-description">Alle Anforderungen wurden dokumentiert und priorisiert</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item active">
+                  <div class="timeline-date">10. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Design-Phase abgeschlossen</div>
+                    <div class="timeline-description">Wireframes und Design-Konzepte wurden finalisiert</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">15. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Entwicklungsphase abgeschlossen</div>
+                    <div class="timeline-description">Frontend- und Backend-Entwicklung abgeschlossen</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">20. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Testphase abgeschlossen</div>
+                    <div class="timeline-description">Alle Tests wurden durchgeführt und Fehler behoben</div>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">25. März 2025</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Launch</div>
+                    <div class="timeline-description">Neue Website geht live</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="settings">
+          <!-- Settings Tab -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Projekteinstellungen</div>
+              <button class="btn btn-primary">Speichern</button>
+            </div>
+            <div class="card-body">
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="project-name">Projektname</label>
+                  <input type="text" id="project-name" value="Website Redesign" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-description">Beschreibung</label>
+                  <textarea id="project-description" class="form-control" rows="3">Komplettes Redesign der Unternehmenswebsite mit modernem UI/UX-Design und verbesserten Funktionen.</textarea>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="project-start-date">Startdatum</label>
+                    <input type="date" id="project-start-date" value="2025-03-01" class="form-control">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="project-end-date">Fälligkeitsdatum</label>
+                    <input type="date" id="project-end-date" value="2025-03-15" class="form-control">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-status">Status</label>
+                  <select id="project-status" class="form-control">
+                    <option value="planning">Planung</option>
+                    <option value="in-progress" selected>In Bearbeitung</option>
+                    <option value="on-hold">Pausiert</option>
+                    <option value="completed">Abgeschlossen</option>
+                    <option value="cancelled">Abgebrochen</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-priority">Priorität</label>
+                  <select id="project-priority" class="form-control">
+                    <option value="low">Niedrig</option>
+                    <option value="medium" selected>Mittel</option>
+                    <option value="high">Hoch</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-team">Teammitglieder</label>
+                  <select id="project-team" class="form-control" multiple>
+                    <option value="1" selected>Max Mustermann</option>
+                    <option value="2" selected>Julia Schmidt</option>
+                    <option value="3" selected>Anna Krause</option>
+                    <option value="4">Thomas Weber</option>
+                    <option value="5">Lisa König</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Task Detail Modal -->
+  <div class="modal" id="task-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Aufgabendetails</div>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="task-title">Titel</label>
+          <input type="text" class="form-control" id="task-title">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-description">Beschreibung</label>
+          <textarea class="form-control" id="task-description"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-status">Status</label>
+          <select class="form-control" id="task-status">
+            <option value="todo">Zu erledigen</option>
+            <option value="in-progress">In Bearbeitung</option>
+            <option value="review">Review</option>
+            <option value="done">Erledigt</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-assignee">Zugewiesen an</label>
+          <select class="form-control" id="task-assignee">
+            <option value="1">Max Mustermann</option>
+            <option value="2">Anna Schmidt</option>
+            <option value="3">Thomas Müller</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-due-date">Fälligkeitsdatum</label>
+          <input type="date" class="form-control" id="task-due-date">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="delete-task">Löschen</button>
+        <button class="btn btn-secondary" id="cancel-task">Abbrechen</button>
+        <button class="btn btn-primary" id="save-task">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000/api';
+    let currentProject = null;
+    let currentTasks = [];
+    
+    // Projekt laden
+    async function loadProject() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id') || 1;
+        
+        const response = await fetch(`${API_URL}/projects/${projectId}`);
+        const data = await response.json();
+        
+        currentProject = data.data;
+        
+        if (currentProject) {
+          document.getElementById('project-name').textContent = currentProject.name;
+          document.getElementById('project-description').textContent = currentProject.description;
+          document.getElementById('project-key').textContent = currentProject.key;
+          document.title = `${currentProject.name} - Projektmanagement-Tool`;
+          
+          // Weitere Projektdetails anzeigen
+          document.querySelector('.project-meta-item:nth-child(1) .project-meta-value').textContent = currentProject.manager;
+          
+          // Formatiere Datum für die Anzeige
+          const startDate = new Date(currentProject.startDate);
+          const endDate = new Date(currentProject.endDate);
+          document.querySelector('.project-meta-item:nth-child(2) .project-meta-value').textContent = startDate.toLocaleDateString('de-DE');
+          document.querySelector('.project-meta-item:nth-child(3) .project-meta-value').textContent = endDate.toLocaleDateString('de-DE');
+          
+          // Status-Badge aktualisieren
+          const statusBadge = document.querySelector('.project-meta-item:nth-child(4) .badge');
+          if (currentProject.status === 'completed') {
+            statusBadge.className = 'badge badge-green';
+            statusBadge.textContent = 'Abgeschlossen';
+          } else if (currentProject.status === 'in-progress') {
+            statusBadge.className = 'badge badge-blue';
+            statusBadge.textContent = 'In Bearbeitung';
+          } else if (currentProject.status === 'planned') {
+            statusBadge.className = 'badge badge-yellow';
+            statusBadge.textContent = 'Geplant';
+          }
+        }
+      } catch (error) {
+        console.error('Fehler beim Laden des Projekts:', error);
+      }
+    }
+    
+    // Aufgaben laden
+    async function loadTasks() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id') || 1;
+        
+        const response = await fetch(`${API_URL}/projects/${projectId}/tasks`);
+        const data = await response.json();
+        
+        currentTasks = data.data;
+        
+        renderKanbanBoard();
+      } catch (error) {
+        console.error('Fehler beim Laden der Aufgaben:', error);
+      }
+    }
+    
+    // Kanban-Board rendern
+    function renderKanbanBoard() {
+      const kanbanBoard = document.getElementById('kanban-board');
+      kanbanBoard.innerHTML = '';
+      
+      const columns = [
+        { id: 'todo', title: 'Zu erledigen' },
+        { id: 'in-progress', title: 'In Bearbeitung' },
+        { id: 'review', title: 'Review' },
+        { id: 'done', title: 'Erledigt' }
+      ];
+      
+      columns.forEach(column => {
+        const columnTasks = currentTasks.filter(task => task.status === column.id);
+        
+        const columnElement = document.createElement('div');
+        columnElement.className = 'kanban-column';
+        columnElement.innerHTML = `
+          <div class="kanban-column-header">
+            <span>${column.title}</span>
+            <span class="kanban-column-count">${columnTasks.length}</span>
+          </div>
+          <div class="kanban-column-body" id="column-${column.id}">
+            ${columnTasks.map(task => `
+              <div class="kanban-card" data-task-id="${task.id}">
+                <div class="kanban-card-title">${task.title}</div>
+                <div class="kanban-card-description">${task.description}</div>
+                <div class="kanban-card-meta">
+                  <div class="kanban-card-assignee">
+                    ${task.assignee ? `
+                      <div class="kanban-card-avatar">${task.assignee.avatar}</div>
+                      <span>${task.assignee.name.split(' ')[0]} ${task.assignee.name.split(' ')[1].charAt(0)}.</span>
+                    ` : '<span>Nicht zugewiesen</span>'}
+                  </div>
+                  <div>${currentProject ? currentProject.key : 'PROJ'}-${task.id}</div>
+                </div>
+              </div>
+            `).join('')}
+            <div class="kanban-add-card" data-column="${column.id}">
+              <span class="kanban-add-card-icon">+</span>
+              <span>Aufgabe hinzufügen</span>
+            </div>
+          </div>
+        `;
+        
+        kanbanBoard.appendChild(columnElement);
+      });
+      
+      // Event-Listener für Karten hinzufügen
+      document.querySelectorAll('.kanban-card').forEach(card => {
+        card.addEventListener('click', () => openTaskModal(card.dataset.taskId));
+      });
+      
+      document.querySelectorAll('.kanban-add-card').forEach(button => {
+        button.addEventListener('click', () => openNewTaskModal(button.dataset.column));
+      });
+    }
+    
+    // Aufgabenmodal öffnen
+    function openTaskModal(taskId) {
+      const task = currentTasks.find(t => t.id == taskId);
+      if (!task) return;
+      
+      document.getElementById('task-title').value = task.title;
+      document.getElementById('task-description').value = task.description;
+      document.getElementById('task-status').value = task.status;
+      
+      // Zugewiesene Person und Fälligkeitsdatum setzen, wenn vorhanden
+      if (task.assignee) {
+        document.getElementById('task-assignee').value = task.assignee.id;
+      }
+      
+      if (task.dueDate) {
+        document.getElementById('task-due-date').value = task.dueDate;
+      }
+      
+      const modal = document.getElementById('task-modal');
+      modal.classList.add('active');
+      
+      // Speichern der aktuellen Aufgaben-ID im Modal
+      modal.dataset.taskId = taskId;
+    }
+    
+    // Neues Aufgabenmodal öffnen
+    function openNewTaskModal(columnId) {
+      document.getElementById('task-title').value = '';
+      document.getElementById('task-description').value = '';
+      document.getElementById('task-status').value = columnId;
+      document.getElementById('task-assignee').value = '1'; // Standardmäßig dem Projektleiter zuweisen
+      
+      // Aktuelles Datum + 2 Wochen als Standard-Fälligkeitsdatum
+      const dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + 14);
+      document.getElementById('task-due-date').value = dueDate.toISOString().split('T')[0];
+      
+      const modal = document.getElementById('task-modal');
+      modal.classList.add('active');
+      
+      // Kennzeichnen als neue Aufgabe
+      modal.dataset.taskId = 'new';
+      modal.dataset.columnId = columnId;
+    }
+    
+    // Aufgabenmodal schließen
+    function closeTaskModal() {
+      const modal = document.getElementById('task-modal');
+      modal.classList.remove('active');
+    }
+    
+    // Aufgabe speichern
+    async function saveTask() {
+      const modal = document.getElementById('task-modal');
+      const taskId = modal.dataset.taskId;
+      
+      const assigneeId = parseInt(document.getElementById('task-assignee').value);
+      const assignee = currentProject.team.find(member => member.id === assigneeId);
+      
+      const taskData = {
+        title: document.getElementById('task-title').value,
+        description: document.getElementById('task-description').value,
+        status: document.getElementById('task-status').value,
+        assignee: assignee,
+        dueDate: document.getElementById('task-due-date').value
+      };
+      
+      try {
+        if (taskId === 'new') {
+          // Neue Aufgabe erstellen (simuliert)
+          const newTask = {
+            id: currentTasks.length + 1,
+            ...taskData
+          };
+          
+          currentTasks.push(newTask);
+        } else {
+          // Bestehende Aufgabe aktualisieren
+          const taskIndex = currentTasks.findIndex(t => t.id == taskId);
+          if (taskIndex !== -1) {
+            currentTasks[taskIndex] = {
+              ...currentTasks[taskIndex],
+              ...taskData
+            };
+          }
+        }
+        
+        // Aktualisiere das Kanban-Board
+        renderKanbanBoard();
+        closeTaskModal();
+      } catch (error) {
+        console.error('Fehler beim Speichern der Aufgabe:', error);
+      }
+    }
+    
+    // Aufgabe löschen
+    async function deleteTask() {
+      const modal = document.getElementById('task-modal');
+      const taskId = modal.dataset.taskId;
+      
+      if (taskId === 'new') {
+        closeTaskModal();
+        return;
+      }
+      
+      try {
+        // Aufgabe aus dem Array entfernen (simuliert)
+        const taskIndex = currentTasks.findIndex(t => t.id == taskId);
+        if (taskIndex !== -1) {
+          currentTasks.splice(taskIndex, 1);
+        }
+        
+        // Aktualisiere das Kanban-Board
+        renderKanbanBoard();
+        closeTaskModal();
+      } catch (error) {
+        console.error('Fehler beim Löschen der Aufgabe:', error);
+      }
+    }
+    
+    // Event-Listener
+    document.getElementById('modal-close').addEventListener('click', closeTaskModal);
+    document.getElementById('cancel-task').addEventListener('click', closeTaskModal);
+    document.getElementById('save-task').addEventListener('click', saveTask);
+    document.getElementById('delete-task').addEventListener('click', deleteTask);
+    
+    // Daten beim Laden der Seite abrufen
+    window.addEventListener('load', () => {
+      loadProject();
+      loadTasks();
+    });
+
+    // Interaktive Elemente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Drag-and-Drop für Kanban-Karten
+      const draggables = document.querySelectorAll('.kanban-card');
+      const dropzones = document.querySelectorAll('.kanban-column-body');
+      
+      draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+          draggable.classList.add('dragging');
+        });
+        
+        draggable.addEventListener('dragend', () => {
+          draggable.classList.remove('dragging');
+        });
+      });
+      
+      dropzones.forEach(dropzone => {
+        dropzone.addEventListener('dragover', e => {
+          e.preventDefault();
+          const dragging = document.querySelector('.dragging');
+          dropzone.appendChild(dragging);
+        });
+      });
+      
+      // Tabs-Funktionalität
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Aktiven Tab entfernen
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          // Neuen Tab aktivieren
+          tab.classList.add('active');
+          const target = tab.getAttribute('data-tab');
+          document.getElementById(target).classList.add('active');
+        });
+      });
+      
+      // "Neue Aufgabe" Button
+      const newTaskBtn = document.getElementById('new-task-btn');
+      if (newTaskBtn) {
+        newTaskBtn.addEventListener('click', () => {
+          alert('Neue Aufgabe erstellen');
+        });
+      }
+    });
+  </script>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-toggle" id="chatbot-toggle">💬</div>
+  
+  <div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+      <div class="chatbot-title">KI-Assistent</div>
+      <button class="chatbot-close" id="chatbot-close">×</button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="message bot">Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir mit diesem Projekt helfen?</div>
+    </div>
+    
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input-field" placeholder="Schreibe eine Nachricht...">
+      <button class="chatbot-send" id="chatbot-send">➤</button>
+    </div>
+  </div>
+  
+  <style>
+    /* Chatbot Styles */
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      z-index: 999;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    
+    .chatbot-toggle:hover {
+      transform: scale(1.1);
+      background-color: var(--primary-hover);
+    }
+    
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 350px;
+      height: 500px;
+      background-color: var(--background-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 998;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s;
+    }
+    
+    .chatbot-container.active {
+      transform: scale(1);
+    }
+    
+    .chatbot-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .chatbot-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .chatbot-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+    }
+    
+    .message.bot {
+      align-self: flex-start;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message.user {
+      align-self: flex-end;
+      background-color: var(--primary-color);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .chatbot-input {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+    }
+    
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+    }
+    
+    .chatbot-input input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .chatbot-send {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .chatbot-send:hover {
+      background-color: var(--primary-hover);
+    }
+  </style>
+  
+  <script>
+    // Chatbot-Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatbotToggle = document.getElementById('chatbot-toggle');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const chatbotClose = document.getElementById('chatbot-close');
+      const chatbotMessages = document.getElementById('chatbot-messages');
+      const chatbotInputField = document.getElementById('chatbot-input-field');
+      const chatbotSend = document.getElementById('chatbot-send');
+      
+      // Chatbot-Verlauf im localStorage speichern
+      let chatHistory = JSON.parse(localStorage.getItem('projectChatHistory')) || [];
+      let userName = localStorage.getItem('userName') || '';
+      
+      // Chatbot öffnen/schließen
+      chatbotToggle.addEventListener('click', function() {
+        chatbotContainer.classList.add('active');
+        
+        // Beim ersten Öffnen nach Benutzernamen fragen, wenn noch nicht bekannt
+        if (!userName) {
+          setTimeout(() => {
+            addBotMessage('Wie darf ich dich nennen?');
+            localStorage.setItem('awaitingName', 'true');
+          }, 1000);
+        }
+      });
+      
+      chatbotClose.addEventListener('click', function() {
+        chatbotContainer.classList.remove('active');
+      });
+      
+      // Chat-Verlauf laden
+      function loadChatHistory() {
+        chatbotMessages.innerHTML = '';
+        
+        if (chatHistory.length === 0) {
+          addBotMessage('Hallo! Ich bin dein persönlicher KI-Assistent. Wie kann ich dir mit diesem Projekt helfen?', false);
+        } else {
+          chatHistory.forEach(message => {
+            if (message.sender === 'bot') {
+              addBotMessage(message.text, false);
+            } else {
+              addUserMessage(message.text, false);
+            }
+          });
+        }
+      }
+      
+      // Chat-Verlauf laden
+      loadChatHistory();
+      
+      // Nachricht senden
+      function sendMessage() {
+        const message = chatbotInputField.value.trim();
+        if (!message) return;
+        
+        addUserMessage(message);
+        chatbotInputField.value = '';
+        
+        // Auf Benutzernamen warten
+        if (localStorage.getItem('awaitingName') === 'true') {
+          userName = message;
+          localStorage.setItem('userName', userName);
+          localStorage.removeItem('awaitingName');
+          
+          setTimeout(() => {
+            addBotMessage(`Hallo ${userName}! Schön, dich kennenzulernen. Wie kann ich dir mit dem Website-Redesign-Projekt helfen?`);
+          }, 1000);
+          return;
+        }
+        
+        // Antwort generieren
+        setTimeout(() => {
+          let response;
+          
+          if (message.toLowerCase().includes('aufgabe') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu'))) {
+            response = `Kein Problem, ${userName}! Du kannst eine neue Aufgabe erstellen, indem du auf den "+ Aufgabe hinzufügen" Button in einer der Spalten des Kanban-Boards klickst. Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Hinzufügen einer Aufgabe nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('.add-project-item').click();
+            }, 2000);
+          } else if (message.toLowerCase().includes('dokument') && (message.toLowerCase().includes('erstellen') || message.toLowerCase().includes('neu') || message.toLowerCase().includes('hochladen'))) {
+            response = `Natürlich ${userName}! Um ein neues Dokument hochzuladen oder zu erstellen, wechsle zum Dokumente-Tab und klicke auf den "+ Neues Dokument" Button. Soll ich das für dich öffnen?`;
+            
+            // Simuliere das Öffnen des Dokumente-Tabs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="documents"]').click();
+              setTimeout(() => {
+                document.querySelector('#documents .btn-primary').click();
+              }, 1000);
+            }, 1000);
+          } else if (message.toLowerCase().includes('zeitplan') || message.toLowerCase().includes('timeline')) {
+            response = `Der Projektzeitplan zeigt dir alle wichtigen Meilensteine und Termine, ${userName}. Ich öffne den Zeitplan-Tab für dich.`;
+            
+            // Simuliere das Öffnen des Zeitplan-Tabs nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="timeline"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('einstellung')) {
+            response = `In den Projekteinstellungen kannst du grundlegende Informationen wie Name, Beschreibung, Daten und Teammitglieder bearbeiten, ${userName}. Ich öffne die Einstellungen für dich.`;
+            
+            // Simuliere das Öffnen der Einstellungen nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="settings"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('kanban')) {
+            response = `Das Kanban-Board hilft dir, den Fortschritt deiner Aufgaben zu visualisieren, ${userName}. Du kannst Aufgaben per Drag & Drop zwischen den verschiedenen Spalten verschieben. Ich öffne das Kanban-Board für dich.`;
+            
+            // Simuliere das Öffnen des Kanban-Boards nach kurzer Verzögerung
+            setTimeout(() => {
+              document.querySelector('[data-tab="kanban"]').click();
+            }, 1000);
+          } else if (message.toLowerCase().includes('danke') || message.toLowerCase().includes('dank')) {
+            response = `Gerne, ${userName}! Ich bin immer hier, wenn du Hilfe mit dem Website-Redesign-Projekt brauchst.`;
+          } else if (message.toLowerCase().includes('hallo') || message.toLowerCase().includes('hi')) {
+            response = `Hallo ${userName}! Schön, dich wiederzusehen. Wie kann ich dir heute mit dem Website-Redesign-Projekt helfen?`;
+          } else {
+            response = `Ich verstehe deine Frage zu "${message}", ${userName}. Als KI-Assistent für dieses Projekt kann ich dir bei der Verwaltung von Aufgaben, Dokumenten und dem Zeitplan helfen. Ich kann auch direkt Aktionen für dich ausführen. Was möchtest du tun?`;
+          }
+          
+          addBotMessage(response);
+        }, 1000);
+      }
+      
+      // Benutzer-Nachricht hinzufügen
+      function addUserMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message user';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'user', text });
+          localStorage.setItem('projectChatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Bot-Nachricht hinzufügen
+      function addBotMessage(text, save = true) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message bot';
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        if (save) {
+          chatHistory.push({ sender: 'bot', text });
+          localStorage.setItem('projectChatHistory', JSON.stringify(chatHistory));
+        }
+      }
+      
+      // Event-Listener für Senden-Button
+      chatbotSend.addEventListener('click', sendMessage);
+      
+      // Event-Listener für Enter-Taste
+      chatbotInputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+  </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
+</body>
+</html> 

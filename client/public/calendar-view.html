@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalender - Projektmanagement-Tool</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary-color: #0052CC;
+      --primary-hover: #0747A6;
+      --secondary-color: #6554C0;
+      --success-color: #36B37E;
+      --warning-color: #FFAB00;
+      --danger-color: #FF5630;
+      --text-color: #172B4D;
+      --text-secondary: #6B778C;
+      --background-color: #F4F5F7;
+      --background-light: #FFFFFF;
+      --border-color: #DFE1E6;
+      --sidebar-width: 240px;
+      --header-height: 56px;
+      --border-radius: 3px;
+      --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
+      --shadow-md: 0 3px 5px rgba(9, 30, 66, 0.12);
+      --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.16);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--background-light);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      height: 100vh;
+      z-index: 10;
+    }
+    
+    .sidebar-header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu {
+      padding: 16px 0;
+    }
+    
+    .sidebar-menu-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      color: var(--text-color);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu-item:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .sidebar-menu-item.active {
+      background-color: rgba(9, 30, 66, 0.08);
+      border-left-color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .sidebar-menu-item-icon {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+    }
+    
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background-color: var(--background-light);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Content */
+    .content {
+      padding: 24px;
+    }
+    
+    /* Calendar Styles */
+    .calendar-container {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .calendar-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .calendar-navigation {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .calendar-nav-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .calendar-nav-btn:hover {
+      background-color: rgba(9, 30, 66, 0.04);
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .calendar-weekday {
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      border-right: 1px solid var(--border-color);
+    }
+    
+    .calendar-weekday:last-child {
+      border-right: none;
+    }
+    
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+    }
+    
+    .calendar-day {
+      min-height: 120px;
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px;
+      position: relative;
+    }
+    
+    .calendar-day:nth-child(7n) {
+      border-right: none;
+    }
+    
+    .calendar-day:nth-last-child(-n+7) {
+      border-bottom: none;
+    }
+    
+    .calendar-day-number {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .calendar-day.other-month .calendar-day-number {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+    
+    .calendar-day.today {
+      background-color: rgba(0, 82, 204, 0.04);
+    }
+    
+    .calendar-day.today .calendar-day-number {
+      background-color: var(--primary-color);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .calendar-events {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .calendar-event {
+      padding: 4px 8px;
+      border-radius: var(--border-radius);
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .calendar-event.project {
+      background-color: var(--primary-color);
+    }
+    
+    .calendar-event.meeting {
+      background-color: var(--secondary-color);
+    }
+    
+    .calendar-event.deadline {
+      background-color: var(--danger-color);
+    }
+    
+    .calendar-event.milestone {
+      background-color: var(--success-color);
+    }
+    
+    /* Event Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(9, 30, 66, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: var(--background-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text-secondary);
+    }
+    
+    .modal-body {
+      padding: 16px;
+    }
+    
+    .modal-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    
+    /* Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(9, 30, 66, 0.04);
+      color: var(--text-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(9, 30, 66, 0.08);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #DE350B;
+    }
+    
+    /* Utilities */
+    .mt-4 {
+      margin-top: 16px;
+    }
+    
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">PM Tool</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📊</div>
+          <span>Dashboard</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📋</div>
+          <span>Projekte</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">✅</div>
+          <span>Aufgaben</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">📄</div>
+          <span>Dokumente</span>
+        </div>
+        <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item-icon">📅</div>
+          <span>Kalender</span>
+        </div>
+        <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item-icon">🤖</div>
+          <span>KI-Assistent</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <div class="header-title">Kalender</div>
+        <div class="header-actions">
+          <button class="btn btn-secondary">Heute</button>
+          <button class="btn btn-secondary">Monat</button>
+          <button class="btn btn-secondary">Woche</button>
+          <button class="btn btn-secondary">Tag</button>
+          <button class="btn btn-primary" id="new-event-btn">+ Neuer Termin</button>
+        </div>
+      </div>
+      
+      <div class="content">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <div class="calendar-title">März 2025</div>
+            <div class="calendar-navigation">
+              <button class="calendar-nav-btn">&#8249;</button>
+              <button class="calendar-nav-btn">&#8250;</button>
+            </div>
+          </div>
+          
+          <div class="calendar-grid">
+            <div class="calendar-weekday">Mo</div>
+            <div class="calendar-weekday">Di</div>
+            <div class="calendar-weekday">Mi</div>
+            <div class="calendar-weekday">Do</div>
+            <div class="calendar-weekday">Fr</div>
+            <div class="calendar-weekday">Sa</div>
+            <div class="calendar-weekday">So</div>
+          </div>
+          
+          <div class="calendar-days">
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">24</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">25</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">26</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">27</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">28</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">1</div>
+              <div class="calendar-events">
+                <div class="calendar-event project">Projektstart: Website-Relaunch</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">2</div>
+              <div class="calendar-events"></div>
+            </div>
+            
+            <div class="calendar-day">
+              <div class="calendar-day-number">3</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">4</div>
+              <div class="calendar-events">
+                <div class="calendar-event meeting">Team-Meeting: Wöchentlicher Sprint</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">5</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">6</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">7</div>
+              <div class="calendar-events">
+                <div class="calendar-event deadline">Deadline: Design-Konzept</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">8</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">9</div>
+              <div class="calendar-events"></div>
+            </div>
+            
+            <div class="calendar-day">
+              <div class="calendar-day-number">10</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">11</div>
+              <div class="calendar-events">
+                <div class="calendar-event meeting">Team-Meeting: Wöchentlicher Sprint</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">12</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">13</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day today">
+              <div class="calendar-day-number">14</div>
+              <div class="calendar-events">
+                <div class="calendar-event milestone">Meilenstein: Frontend-Prototyp</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">15</div>
+              <div class="calendar-events">
+                <div class="calendar-event meeting">Kundenpräsentation</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">16</div>
+              <div class="calendar-events"></div>
+            </div>
+            
+            <div class="calendar-day">
+              <div class="calendar-day-number">17</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">18</div>
+              <div class="calendar-events">
+                <div class="calendar-event meeting">Team-Meeting: Wöchentlicher Sprint</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">19</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">20</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">21</div>
+              <div class="calendar-events">
+                <div class="calendar-event deadline">Deadline: Backend-Integration</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">22</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">23</div>
+              <div class="calendar-events"></div>
+            </div>
+            
+            <div class="calendar-day">
+              <div class="calendar-day-number">24</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">25</div>
+              <div class="calendar-events">
+                <div class="calendar-event meeting">Team-Meeting: Wöchentlicher Sprint</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">26</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">27</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">28</div>
+              <div class="calendar-events">
+                <div class="calendar-event milestone">Meilenstein: Beta-Version</div>
+              </div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">29</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day">
+              <div class="calendar-day-number">30</div>
+              <div class="calendar-events"></div>
+            </div>
+            
+            <div class="calendar-day">
+              <div class="calendar-day-number">31</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">1</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">2</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">3</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">4</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">5</div>
+              <div class="calendar-events"></div>
+            </div>
+            <div class="calendar-day other-month">
+              <div class="calendar-day-number">6</div>
+              <div class="calendar-events"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Event Modal -->
+  <div class="modal" id="event-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Neuer Termin</div>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="event-title">Titel</label>
+          <input type="text" class="form-control" id="event-title">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-type">Typ</label>
+          <select class="form-control" id="event-type">
+            <option value="project">Projekt</option>
+            <option value="meeting">Meeting</option>
+            <option value="deadline">Deadline</option>
+            <option value="milestone">Meilenstein</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-date">Datum</label>
+          <input type="date" class="form-control" id="event-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-time">Uhrzeit</label>
+          <input type="time" class="form-control" id="event-time">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-description">Beschreibung</label>
+          <textarea class="form-control" id="event-description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-project">Projekt</label>
+          <select class="form-control" id="event-project">
+            <option value="1">Website-Relaunch</option>
+            <option value="2">Mobile App</option>
+            <option value="3">CRM-Integration</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="event-attendees">Teilnehmer</label>
+          <select class="form-control" id="event-attendees" multiple>
+            <option value="1">Max Mustermann</option>
+            <option value="2">Anna Schmidt</option>
+            <option value="3">Thomas Müller</option>
+            <option value="4">Lisa Weber</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancel-event">Abbrechen</button>
+        <button class="btn btn-primary" id="save-event">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Kalender-Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      // Event-Modal öffnen
+      const eventButtons = document.querySelectorAll('.calendar-event');
+      const eventModal = document.getElementById('event-modal');
+      const closeModal = document.getElementById('modal-close');
+      
+      eventButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const eventTitle = this.querySelector('.event-title').textContent;
+          const eventTime = this.querySelector('.event-time').textContent;
+          const eventType = this.classList.contains('event-meeting') ? 'Besprechung' : 
+                           this.classList.contains('event-deadline') ? 'Deadline' : 
+                           this.classList.contains('event-milestone') ? 'Meilenstein' : 'Ereignis';
+          
+          document.getElementById('modal-event-title').textContent = eventTitle;
+          document.getElementById('modal-event-time').textContent = eventTime;
+          document.getElementById('modal-event-type').textContent = eventType;
+          
+          eventModal.classList.add('show');
+        });
+      });
+      
+      // Event-Modal schließen
+      closeModal.addEventListener('click', function() {
+        eventModal.classList.remove('show');
+      });
+      
+      // Modal schließen, wenn außerhalb geklickt wird
+      window.addEventListener('click', function(e) {
+        if (e.target === eventModal) {
+          eventModal.classList.remove('show');
+        }
+      });
+      
+      // Heute-Button
+      document.getElementById('today-btn').addEventListener('click', function() {
+        alert('Zum heutigen Tag navigieren');
+      });
+      
+      // Ansicht wechseln
+      const viewButtons = document.querySelectorAll('.view-btn');
+      viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          viewButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          alert(`Ansicht gewechselt zu: ${this.textContent}`);
+        });
+      });
+      
+      // Neues Ereignis erstellen
+      document.getElementById('new-event-btn').addEventListener('click', function() {
+        alert('Neues Ereignis erstellen');
+      });
+    });
+  </script>
+  
+  <!-- Gemeinsame Navigation einbinden -->
+  <script src="shared-navigation.js"></script>
+</body>
+</html> 
